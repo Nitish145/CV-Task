@@ -20,20 +20,37 @@ class _PublicProjectsPageState extends State<PublicProjectsPage> {
         future: getPublicProjects(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            return ListView.builder(
-              itemCount: snapshot.data.length,
-              itemBuilder: (context, index) {
-                ProjectDetails projectDetails = snapshot.data[index];
-                return ProjectCard(
-                  id: projectDetails.id,
-                  name: projectDetails.name,
-                  projectAccessType: projectDetails.projectAccessType,
-                  createdAt: projectDetails.createdAt,
-                  updatedAt: projectDetails.updatedAt,
-                  imageUrl: projectDetails.imagePreview.url,
+            if (snapshot.hasData) {
+              return ListView.builder(
+                itemCount: snapshot.data.length,
+                itemBuilder: (context, index) {
+                  ProjectDetails projectDetails = snapshot.data[index];
+                  return ProjectCard(
+                    id: projectDetails.id,
+                    name: projectDetails.name,
+                    projectAccessType: projectDetails.projectAccessType,
+                    createdAt: projectDetails.createdAt,
+                    updatedAt: projectDetails.updatedAt,
+                    imageUrl: projectDetails.imagePreview.url,
+                  );
+                },
+              );
+            } else {
+              if (snapshot.hasError)
+                return Container(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Center(
+                      child:
+                          Text("Something Went Wrong! Please try again later"),
+                    ),
+                  ),
                 );
-              },
-            );
+              else
+                return Container();
+            }
           } else {
             return Container(
               height: MediaQuery.of(context).size.height,
