@@ -1,6 +1,7 @@
 import 'package:cv_projects_task/Services/projects.dart';
 import 'package:cv_projects_task/globals.dart';
-import 'package:cv_projects_task/models/project_details.dart';
+import 'package:cv_projects_task/models/project_model_response.dart'
+    as ProjectModel;
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
@@ -55,11 +56,16 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
         ),
       ),
       body: FutureBuilder(
-        future: getProjectDetails(widget.id),
+        future: getPublicProjectDetails(widget.id),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasData) {
-              ProjectDetails projectDetails = snapshot.data;
+              ProjectModel.ProjectModelResponse projectModelResponse =
+                  snapshot.data;
+              ProjectModel.Data data = projectModelResponse.data;
+              ProjectModel.DataAttributes dataAttributes = data.attributes;
+              ProjectModel.IncludedAttributes includedAttributes =
+                  projectModelResponse.included[0].attributes;
               return SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,7 +75,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
                       child: FadeInImage.memoryNetwork(
                         width: MediaQuery.of(context).size.width,
                         placeholder: kTransparentImage,
-                        image: "${url + projectDetails.imagePreview.url}",
+                        image: "${url + dataAttributes.imagePreview.url}",
                       ),
                     ),
                     Padding(
@@ -78,7 +84,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
                       child: Align(
                         alignment: Alignment.center,
                         child: Text(
-                          projectDetails.name,
+                          dataAttributes.name,
                           style: Theme.of(context).textTheme.headline.copyWith(
                                 color: Theme.of(context).primaryColor,
                                 fontWeight: FontWeight.bold,
@@ -88,27 +94,27 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
                     ),
                     getTextRow(
                       "Author",
-                      projectDetails.author.name,
+                      includedAttributes.name,
                     ),
                     getTextRow(
                       "Views",
-                      projectDetails.view.toString(),
+                      dataAttributes.view.toString(),
                     ),
                     getTextRow(
                       "Project Access Type",
-                      projectDetails.projectAccessType,
+                      dataAttributes.projectAccessType,
                     ),
                     getTextRow(
                       "Description",
-                      _parseHtmlString(projectDetails.description),
+                      _parseHtmlString(dataAttributes.description ?? ""),
                     ),
                     getTextRow(
                       "Created At",
-                      format.format(projectDetails.createdAt),
+                      format.format(dataAttributes.createdAt),
                     ),
                     getTextRow(
                       "Last Updated",
-                      timeago.format(projectDetails.updatedAt),
+                      timeago.format(dataAttributes.updatedAt),
                     )
                   ],
                 ),

@@ -1,4 +1,5 @@
 import 'package:cv_projects_task/globals.dart';
+import 'package:cv_projects_task/public_projects_page.dart';
 import 'package:cv_projects_task/signup_login_page.dart';
 import 'package:flutter/material.dart';
 
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: SignUpLoginPage(),
+      home: PublicProjectsPage(),
     );
   }
 }

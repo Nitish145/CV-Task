@@ -1,6 +1,6 @@
 import 'package:cv_projects_task/Services/projects.dart';
 import 'package:cv_projects_task/components/project_card.dart';
-import 'package:cv_projects_task/models/project_details.dart';
+import 'package:cv_projects_task/models/projects_response.dart' as Projects;
 import 'package:flutter/material.dart';
 
 class PublicProjectsPage extends StatefulWidget {
@@ -21,17 +21,19 @@ class _PublicProjectsPageState extends State<PublicProjectsPage> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasData) {
+              Projects.ProjectsResponse projectsResponse = snapshot.data;
               return ListView.builder(
-                itemCount: snapshot.data.length,
+                itemCount: projectsResponse.data.length,
                 itemBuilder: (context, index) {
-                  ProjectDetails projectDetails = snapshot.data[index];
+                  Projects.Datum datum = projectsResponse.data[index];
+                  Projects.DatumAttributes datumAttributes = datum.attributes;
                   return ProjectCard(
-                    id: projectDetails.id,
-                    name: projectDetails.name,
-                    projectAccessType: projectDetails.projectAccessType,
-                    createdAt: projectDetails.createdAt,
-                    updatedAt: projectDetails.updatedAt,
-                    imageUrl: projectDetails.imagePreview.url,
+                    id: int.parse(datum.id),
+                    name: datumAttributes.name,
+                    projectAccessType: datumAttributes.projectAccessType,
+                    createdAt: datumAttributes.createdAt,
+                    updatedAt: datumAttributes.updatedAt,
+                    imageUrl: datumAttributes.imagePreview.url,
                   );
                 },
               );
