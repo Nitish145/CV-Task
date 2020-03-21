@@ -27,6 +27,7 @@ dependencies:
   timeago:
   flutter_svg:
   shared_preferences:
+  url_launcher:
 
 dev_dependencies:
   flutter_test:
@@ -43,6 +44,7 @@ flutter:
   assets:
     - assets/images/homepage/
     - assets/images/teachers/
+    - assets/images/contribute/
     - assets/images/logos/
     - assets/images/SVGs/
     - assets/images/sign_in.png
