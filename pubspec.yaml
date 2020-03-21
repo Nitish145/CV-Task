@@ -42,6 +42,7 @@ flutter:
 
   assets:
     - assets/images/homepage/
+    - assets/images/teachers/
     - assets/images/logos/
     - assets/images/SVGs/
     - assets/images/sign_in.png
