@@ -1,4 +1,5 @@
 import 'package:cv_projects_task/globals.dart';
+import 'package:cv_projects_task/home_page.dart';
 import 'package:cv_projects_task/my_projects_page.dart';
 import 'package:cv_projects_task/profile_page.dart';
 import 'package:cv_projects_task/public_projects_page.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
         cursorColor: Color.fromRGBO(66, 185, 131, 1),
         fontFamily: 'Raleway',
       ),
-      home: SafeArea(child: MyProjectsPage()),
+      home: SafeArea(child: HomePage()),
     );
   }
 }

@@ -41,8 +41,10 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/svg/
-    - assets/png/
+    - assets/images/homepage/
+    - assets/images/logos/
+    - assets/images/SVGs/
+    - assets/images/
 
   fonts:
     - family: Raleway
