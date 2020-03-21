@@ -44,7 +44,7 @@ flutter:
     - assets/images/homepage/
     - assets/images/logos/
     - assets/images/SVGs/
-    - assets/images/
+    - assets/images/sign_in.png
 
   fonts:
     - family: Raleway

@@ -40,6 +40,10 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget getHomePageSketch() {
+    return Image.asset("assets/images/homepage/new-homepage-sketch.png");
+  }
+
   Widget getFeaturesHeader() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 4),
@@ -111,6 +115,7 @@ class _HomePageState extends State<HomePage> {
               children: <Widget>[
                 getHeader(),
                 getSubhead(),
+                getHomePageSketch(),
                 getTeachersAndContributorButtons(),
                 getFeaturesHeader(),
                 FeatureCard(

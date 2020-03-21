@@ -1,9 +1,5 @@
 import 'package:cv_projects_task/globals.dart';
 import 'package:cv_projects_task/home_page.dart';
-import 'package:cv_projects_task/my_projects_page.dart';
-import 'package:cv_projects_task/profile_page.dart';
-import 'package:cv_projects_task/public_projects_page.dart';
-import 'package:cv_projects_task/signup_login_page.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());

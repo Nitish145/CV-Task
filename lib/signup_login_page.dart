@@ -22,6 +22,16 @@ class _SignUpLoginPageState extends State<SignUpLoginPage> {
     });
   }
 
+  Widget _signUpLogInImage() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Image.asset(
+        "assets/images/sign_in.png",
+        height: MediaQuery.of(context).size.height / 3,
+      ),
+    );
+  }
+
   Widget _showEmailInput() {
     return new TextFormField(
       maxLines: 1,
@@ -173,24 +183,27 @@ class _SignUpLoginPageState extends State<SignUpLoginPage> {
         title: Text("CircuitVerse"),
         centerTitle: true,
       ),
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: new Form(
-                key: _formKey,
-                child: Column(
-                  children: <Widget>[
-                    _showEmailInput(),
-                    _showPasswordInput(),
-                    _showLoginButton(),
-                  ],
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: new Form(
+                  key: _formKey,
+                  child: Column(
+                    children: <Widget>[
+                      _signUpLogInImage(),
+                      _showEmailInput(),
+                      _showPasswordInput(),
+                      _showLoginButton(),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
