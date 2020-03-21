@@ -57,6 +57,8 @@ class Attributes {
   dynamic country;
   dynamic educationalInstitute;
   bool subscribed;
+  DateTime createdAt;
+  DateTime updatedAt;
 
   Attributes({
     this.id,
@@ -66,6 +68,8 @@ class Attributes {
     this.country,
     this.educationalInstitute,
     this.subscribed,
+    this.createdAt,
+    this.updatedAt,
   });
 
   factory Attributes.fromJson(Map<String, dynamic> json) => Attributes(
@@ -76,6 +80,8 @@ class Attributes {
         country: json["country"],
         educationalInstitute: json["educational_institute"],
         subscribed: json["subscribed"],
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -86,5 +92,7 @@ class Attributes {
         "country": country,
         "educational_institute": educationalInstitute,
         "subscribed": subscribed,
+        "created_at": createdAt.toIso8601String(),
+        "updated_at": updatedAt.toIso8601String(),
       };
 }

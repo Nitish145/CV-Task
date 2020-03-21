@@ -13,6 +13,7 @@ class _SignUpLoginPageState extends State<SignUpLoginPage> {
   bool _isLoginButtonTapped = false;
   bool _isLoginSuccessful = false;
   bool _obscureText = true;
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   // Toggles the password show status
   void _toggle() {
@@ -28,7 +29,7 @@ class _SignUpLoginPageState extends State<SignUpLoginPage> {
       style: TextStyle(color: Colors.black),
       decoration: new InputDecoration(
         labelText: "Email",
-        labelStyle: Theme.of(context).primaryTextTheme.subhead,
+        labelStyle: Theme.of(context).primaryTextTheme.display4,
         icon: new Icon(
           Icons.person,
           color: Theme.of(context).primaryColor,
@@ -54,7 +55,7 @@ class _SignUpLoginPageState extends State<SignUpLoginPage> {
           onTap: _toggle,
         ),
         labelText: "Password",
-        labelStyle: Theme.of(context).primaryTextTheme.subhead,
+        labelStyle: Theme.of(context).primaryTextTheme.display4,
         icon: new Icon(
           Icons.lock,
           color: Theme.of(context).primaryColor,
@@ -75,10 +76,8 @@ class _SignUpLoginPageState extends State<SignUpLoginPage> {
               color: Theme.of(context).primaryColor,
               child: new Text(
                 'Authenticating...',
-                style: Theme.of(context)
-                    .accentTextTheme
-                    .headline
-                    .copyWith(color: Colors.white),
+                style: Theme.of(context).primaryTextTheme.headline.copyWith(
+                    fontWeight: FontWeight.normal, color: Colors.white),
               ),
               onPressed: () {})
           : (_isLoginSuccessful)
@@ -91,8 +90,11 @@ class _SignUpLoginPageState extends State<SignUpLoginPage> {
                     style: BorderStyle.solid,
                   ),
                   child: new Text(
-                    'Logged In Successfully',
-                    style: Theme.of(context).primaryTextTheme.headline,
+                    'Logged In',
+                    style: Theme.of(context)
+                        .primaryTextTheme
+                        .headline
+                        .copyWith(fontWeight: FontWeight.normal),
                   ),
                   onPressed: null)
               : new FlatButton(
@@ -105,7 +107,10 @@ class _SignUpLoginPageState extends State<SignUpLoginPage> {
                   ),
                   child: new Text(
                     'LOGIN',
-                    style: Theme.of(context).primaryTextTheme.headline,
+                    style: Theme.of(context)
+                        .primaryTextTheme
+                        .headline
+                        .copyWith(fontWeight: FontWeight.normal),
                   ),
                   onPressed: _validateAndSubmit,
                 ),
@@ -122,6 +127,15 @@ class _SignUpLoginPageState extends State<SignUpLoginPage> {
     return false;
   }
 
+  void resetLogin() {
+    setState(() {
+      _isLoginSuccessful = false;
+      _isLoginButtonTapped = false;
+    });
+    _formKey.currentState.reset();
+    _showSnackBar("Authentication details were not correct");
+  }
+
   void _validateAndSubmit() {
     if (_validateAndSave()) {
       setState(() {
@@ -130,9 +144,7 @@ class _SignUpLoginPageState extends State<SignUpLoginPage> {
       FocusScope.of(context).requestFocus(new FocusNode());
       userLogin(_email, _password).then((login) {
         if (login != null) {
-          Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text("Login Successful !"),
-          ));
+          _showSnackBar("Login Successful");
           setState(() {
             _isLoginSuccessful = true;
             _isLoginButtonTapped = false;
@@ -140,36 +152,50 @@ class _SignUpLoginPageState extends State<SignUpLoginPage> {
           SharedPreferences.getInstance().then((prefs) {
             prefs.setString("token", login.token);
           });
+        } else {
+          resetLogin();
         }
+      }).catchError((e) {
+        resetLogin();
       });
     }
+  }
+
+  void _showSnackBar(String message) {
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text(message),
+    ));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: new Form(
-                  key: _formKey,
-                  child: Column(
-                    children: <Widget>[
-                      _showEmailInput(),
-                      _showPasswordInput(),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 45),
-                        child: _showLoginButton(),
-                      ),
-                    ],
-                  ),
+      key: _scaffoldKey,
+      appBar: AppBar(
+        title: Text("CircuitVerse"),
+        centerTitle: true,
+      ),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: new Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    _showEmailInput(),
+                    _showPasswordInput(),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 45),
+                      child: _showLoginButton(),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-String url = "http://36677f35.ngrok.io";
+String url = "http://b233d3e3.ngrok.io";
 
 
 Map<int, Color> color = {

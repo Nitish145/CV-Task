@@ -25,7 +25,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
       padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
       child: RichText(
         text: TextSpan(
-          style: Theme.of(context).textTheme.display1,
+          style: Theme.of(context).primaryTextTheme.subhead,
           children: <TextSpan>[
             TextSpan(
               text: "$heading : ",
@@ -33,7 +33,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
             ),
             TextSpan(
               text: content,
-              style: Theme.of(context).textTheme.display2,
+              style: Theme.of(context).primaryTextTheme.subhead,
             )
           ],
         ),
@@ -85,7 +85,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
                         alignment: Alignment.center,
                         child: Text(
                           dataAttributes.name,
-                          style: Theme.of(context).textTheme.headline.copyWith(
+                          style: Theme.of(context).primaryTextTheme.headline.copyWith(
                                 color: Theme.of(context).primaryColor,
                                 fontWeight: FontWeight.bold,
                               ),

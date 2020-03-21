@@ -6,7 +6,7 @@ import 'package:cv_projects_task/models/user_response.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-var header = {"Content-Type": "application/vnd.api+json"};
+var header = {"Content-Type": "application/json"};
 http.Client client = new http.Client();
 
 Future<LoginResponse> userLogin(String email, String pass) async {
