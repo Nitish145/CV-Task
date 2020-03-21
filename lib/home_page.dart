@@ -1,4 +1,6 @@
 import 'package:cv_projects_task/components/feature_card.dart';
+import 'package:cv_projects_task/contributors_page.dart';
+import 'package:cv_projects_task/teachers_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -85,7 +87,10 @@ class _HomePageState extends State<HomePage> {
               color: Theme.of(context).primaryColorDark,
               width: 2,
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => TeachersPage()));
+            },
           ),
         ),
         Padding(
@@ -96,7 +101,10 @@ class _HomePageState extends State<HomePage> {
               color: Theme.of(context).primaryColorDark,
               width: 2,
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ContributorsPage()));
+            },
           ),
         ),
       ],

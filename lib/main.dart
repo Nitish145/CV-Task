@@ -1,8 +1,5 @@
-import 'package:cv_projects_task/components/teachers_card.dart';
-import 'package:cv_projects_task/contributors_page.dart';
 import 'package:cv_projects_task/globals.dart';
 import 'package:cv_projects_task/home_page.dart';
-import 'package:cv_projects_task/teachers_page.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -22,7 +19,7 @@ class MyApp extends StatelessWidget {
         cursorColor: Color.fromRGBO(66, 185, 131, 1),
         fontFamily: 'Raleway',
       ),
-      home: SafeArea(child: ContributorsPage()),
+      home: SafeArea(child: HomePage()),
     );
   }
 }
