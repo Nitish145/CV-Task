@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 String url = "http://b233d3e3.ngrok.io";
-
 
 Map<int, Color> color = {
   50: Color.fromRGBO(66, 185, 131, .1),
@@ -15,3 +15,11 @@ Map<int, Color> color = {
   800: Color.fromRGBO(66, 185, 131, .9),
   900: Color.fromRGBO(66, 185, 131, 1),
 };
+
+launchURL(String url) async {
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
+  }
+}

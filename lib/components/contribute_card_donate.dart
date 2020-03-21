@@ -1,5 +1,5 @@
+import 'package:cv_projects_task/globals.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class ContributeCardDonate extends StatelessWidget {
   final String logoPath;
@@ -12,14 +12,6 @@ class ContributeCardDonate extends StatelessWidget {
     this.header,
     this.url,
   }) : super(key: key);
-
-  _launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +28,7 @@ class ContributeCardDonate extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () async {
-              await _launchURL(url);
+              await launchURL(url);
             },
             child: Container(
               decoration: BoxDecoration(

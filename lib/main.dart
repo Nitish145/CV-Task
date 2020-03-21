@@ -1,3 +1,4 @@
+import 'package:cv_projects_task/about_page.dart';
 import 'package:cv_projects_task/globals.dart';
 import 'package:cv_projects_task/home_page.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
         cursorColor: Color.fromRGBO(66, 185, 131, 1),
         fontFamily: 'Raleway',
       ),
-      home: SafeArea(child: HomePage()),
+      home: SafeArea(child: AboutPage()),
     );
   }
 }
