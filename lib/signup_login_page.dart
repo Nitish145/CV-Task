@@ -29,7 +29,7 @@ class _SignUpLoginPageState extends State<SignUpLoginPage> {
       style: TextStyle(color: Colors.black),
       decoration: new InputDecoration(
         labelText: "Email",
-        labelStyle: Theme.of(context).primaryTextTheme.display4,
+        labelStyle: Theme.of(context).textTheme.headline,
         icon: new Icon(
           Icons.person,
           color: Theme.of(context).primaryColor,
@@ -55,7 +55,7 @@ class _SignUpLoginPageState extends State<SignUpLoginPage> {
           onTap: _toggle,
         ),
         labelText: "Password",
-        labelStyle: Theme.of(context).primaryTextTheme.display4,
+        labelStyle: Theme.of(context).textTheme.headline,
         icon: new Icon(
           Icons.lock,
           color: Theme.of(context).primaryColor,
@@ -68,52 +68,50 @@ class _SignUpLoginPageState extends State<SignUpLoginPage> {
   }
 
   Widget _showLoginButton() {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      child: (_isLoginButtonTapped)
-          ? new FlatButton(
-              padding: EdgeInsets.all(8),
-              color: Theme.of(context).primaryColor,
-              child: new Text(
-                'Authenticating...',
-                style: Theme.of(context).primaryTextTheme.headline.copyWith(
-                    fontWeight: FontWeight.normal, color: Colors.white),
-              ),
-              onPressed: () {})
-          : (_isLoginSuccessful)
-              ? new FlatButton(
-                  padding: EdgeInsets.all(8),
-                  color: Colors.white,
-                  shape: new Border.all(
-                    width: 2,
-                    color: Theme.of(context).primaryColor,
-                    style: BorderStyle.solid,
-                  ),
-                  child: new Text(
-                    'Logged In',
-                    style: Theme.of(context)
-                        .primaryTextTheme
-                        .headline
-                        .copyWith(fontWeight: FontWeight.normal),
-                  ),
-                  onPressed: null)
-              : new FlatButton(
-                  padding: EdgeInsets.all(8),
-                  color: Colors.white,
-                  shape: new Border.all(
-                    width: 2,
-                    color: Theme.of(context).primaryColor,
-                    style: BorderStyle.solid,
-                  ),
-                  child: new Text(
-                    'LOGIN',
-                    style: Theme.of(context)
-                        .primaryTextTheme
-                        .headline
-                        .copyWith(fontWeight: FontWeight.normal),
-                  ),
-                  onPressed: _validateAndSubmit,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 45),
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        child: (_isLoginButtonTapped)
+            ? new FlatButton(
+                padding: EdgeInsets.all(8),
+                color: Theme.of(context).primaryColor,
+                child: new Text(
+                  'Authenticating...',
+                  style: Theme.of(context).textTheme.headline.copyWith(
+                        color: Colors.white,
+                      ),
                 ),
+                onPressed: () {})
+            : (_isLoginSuccessful)
+                ? new FlatButton(
+                    padding: EdgeInsets.all(8),
+                    color: Colors.white,
+                    shape: new Border.all(
+                      width: 2,
+                      color: Theme.of(context).primaryColor,
+                      style: BorderStyle.solid,
+                    ),
+                    child: new Text(
+                      'Logged In',
+                      style: Theme.of(context).textTheme.headline,
+                    ),
+                    onPressed: null)
+                : new FlatButton(
+                    padding: EdgeInsets.all(8),
+                    color: Colors.white,
+                    shape: new Border.all(
+                      width: 2,
+                      color: Theme.of(context).primaryColor,
+                      style: BorderStyle.solid,
+                    ),
+                    child: new Text(
+                      'LOGIN',
+                      style: Theme.of(context).textTheme.headline,
+                    ),
+                    onPressed: _validateAndSubmit,
+                  ),
+      ),
     );
   }
 
@@ -187,10 +185,7 @@ class _SignUpLoginPageState extends State<SignUpLoginPage> {
                   children: <Widget>[
                     _showEmailInput(),
                     _showPasswordInput(),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 45),
-                      child: _showLoginButton(),
-                    ),
+                    _showLoginButton(),
                   ],
                 ),
               ),

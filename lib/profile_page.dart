@@ -31,13 +31,13 @@ class _ProfilePageState extends State<ProfilePage> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
         child: RichText(
           text: TextSpan(
-              style: Theme.of(context).primaryTextTheme.display4,
+              style: Theme.of(context).textTheme.headline,
               children: <TextSpan>[
                 TextSpan(
                     text: heading,
                     style: Theme.of(context)
-                        .primaryTextTheme
-                        .display4
+                        .textTheme
+                        .headline
                         .copyWith(fontWeight: FontWeight.bold)),
                 TextSpan(text: description)
               ]),
@@ -49,26 +49,15 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget getUserNameAndEmailWidget(String name, String email) {
     return Column(
       children: <Widget>[
-        Text(name, style: Theme.of(context).primaryTextTheme.headline),
-        Text(email, style: Theme.of(context).primaryTextTheme.subhead),
-      ],
-    );
-  }
-
-  Widget getEditButton() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 24),
-      child: RaisedButton(
-        color: Theme.of(context).primaryColor,
-        child: Text(
-          "Edit Details",
+        Text(
+          name,
           style: Theme.of(context)
-              .primaryTextTheme
-              .display4
-              .copyWith(color: Colors.white),
+              .textTheme
+              .display1
+              .copyWith(fontWeight: FontWeight.bold),
         ),
-        onPressed: () {},
-      ),
+        Text(email, style: Theme.of(context).textTheme.subhead),
+      ],
     );
   }
 
@@ -80,6 +69,11 @@ class _ProfilePageState extends State<ProfilePage> {
           "Your Profile",
         ),
         centerTitle: true,
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.edit),
+        tooltip: "Edit Profile",
+        onPressed: () {},
       ),
       body: FutureBuilder(
         future: userMeGet(),
@@ -105,7 +99,6 @@ class _ProfilePageState extends State<ProfilePage> {
                         attributes.educationalInstitute ?? "".toString()),
                     getProfileRow("Subscribed to mails : ",
                         attributes.subscribed.toString()),
-                    getEditButton(),
                   ],
                 ),
               );
@@ -117,8 +110,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Center(
-                      child: Text(
-                          "Something Went Wrong! Please try again later"),
+                      child:
+                          Text("Something Went Wrong! Please try again later"),
                     ),
                   ),
                 );
