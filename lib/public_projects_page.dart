@@ -14,7 +14,6 @@ class _PublicProjectsPageState extends State<PublicProjectsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Public Projects"),
-        centerTitle: true,
       ),
       body: FutureBuilder(
         future: getPublicProjects(),

@@ -54,6 +54,9 @@ class _ContributorsPageState extends State<ContributorsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Wanna Contribute ?"),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[

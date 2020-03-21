@@ -52,6 +52,9 @@ class _TeachersPageState extends State<TeachersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Teachers In Mind ?"),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[

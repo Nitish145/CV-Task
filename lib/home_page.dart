@@ -1,7 +1,15 @@
+import 'package:cv_projects_task/about_page.dart';
 import 'package:cv_projects_task/components/feature_card.dart';
 import 'package:cv_projects_task/contributors_page.dart';
+import 'package:cv_projects_task/my_projects_page.dart';
+import 'package:cv_projects_task/profile_page.dart';
+import 'package:cv_projects_task/public_projects_page.dart';
+import 'package:cv_projects_task/signup_login_page.dart';
 import 'package:cv_projects_task/teachers_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -9,10 +17,22 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  SharedPreferences prefs;
+
+  @override
+  void initState() {
+    super.initState();
+    SharedPreferences.getInstance().then((_prefs) {
+      setState(() {
+        prefs = _prefs;
+      });
+    });
+  }
+
   Widget getAppBar() {
     return AppBar(
       title: Text("CircuitVerse"),
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Theme.of(context).primaryColor,
       centerTitle: true,
     );
   }
@@ -88,8 +108,12 @@ class _HomePageState extends State<HomePage> {
               width: 2,
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => TeachersPage()));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TeachersPage(),
+                ),
+              );
             },
           ),
         ),
@@ -102,8 +126,12 @@ class _HomePageState extends State<HomePage> {
               width: 2,
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ContributorsPage()));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ContributorsPage(),
+                ),
+              );
             },
           ),
         ),
@@ -111,9 +139,140 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget drawerTile(String title, IconData iconData) {
+    return ListTile(
+      leading: Icon(iconData),
+      title: Text(
+        title,
+        style: Theme.of(context).textTheme.headline,
+      ),
+    );
+  }
+
+  Widget _drawer(context) => Drawer(
+        child: ListView(
+          children: <Widget>[
+            DrawerHeader(
+              child: Image.asset("assets/images/CircuitVerse.png"),
+            ),
+            InkWell(
+              child: drawerTile("About", FontAwesome5.address_card),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AboutPage(),
+                  ),
+                );
+              },
+            ),
+            InkWell(
+              child: drawerTile("Contribute", Icons.add),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ContributorsPage(),
+                  ),
+                );
+              },
+            ),
+            InkWell(
+              child: drawerTile("Teachers", Icons.account_balance),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TeachersPage(),
+                  ),
+                );
+              },
+            ),
+            InkWell(
+              child: drawerTile("Public Projects", Ionicons.md_paper),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PublicProjectsPage(),
+                  ),
+                );
+              },
+            ),
+            prefs != null
+                ? prefs.getBool("isLoggedIn") == true
+                    ? ExpansionTile(
+                        title: Text(
+                          prefs.getString("currentUserName") ?? "",
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline
+                              .copyWith(fontWeight: FontWeight.bold),
+                        ),
+                        children: <Widget>[
+                          InkWell(
+                            child: drawerTile("Profile", FontAwesome5.user),
+                            onTap: () {
+                              Navigator.pop(context);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ProfilePage(),
+                                ),
+                              );
+                            },
+                          ),
+                          InkWell(
+                            child: drawerTile(
+                                "My Projects", FontAwesome5.address_book),
+                            onTap: () {
+                              Navigator.pop(context);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MyProjectsPage(),
+                                ),
+                              );
+                            },
+                          ),
+                          InkWell(
+                            child: drawerTile("Log Out", Ionicons.ios_log_out),
+                            onTap: () {
+                              Navigator.pop(context);
+                              prefs.clear();
+                              setState(() {});
+                              Fluttertoast.showToast(
+                                  msg: "Logged Out Successfully");
+                            },
+                          ),
+                        ],
+                      )
+                    : InkWell(
+                        child: drawerTile("Login", Ionicons.ios_log_in),
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SignUpLoginPage(),
+                            ),
+                          );
+                        },
+                      )
+                : Container()
+          ],
+        ),
+      );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: getAppBar(),
+      drawer: _drawer(context),
       body: Container(
         width: MediaQuery.of(context).size.width,
         child: SingleChildScrollView(

@@ -159,6 +159,11 @@ class _SignUpLoginPageState extends State<SignUpLoginPage> {
           });
           SharedPreferences.getInstance().then((prefs) {
             prefs.setString("token", login.token);
+            prefs.setBool("isLoggedIn", true);
+            prefs.setString("currentUserName", login.username);
+          });
+          Future.delayed(Duration(seconds: 1), () {
+            Navigator.pop(context);
           });
         } else {
           resetLogin();
@@ -180,8 +185,7 @@ class _SignUpLoginPageState extends State<SignUpLoginPage> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text("CircuitVerse"),
-        centerTitle: true,
+        title: Text("LogIn / SignUp"),
       ),
       body: SingleChildScrollView(
         child: Center(

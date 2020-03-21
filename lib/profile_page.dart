@@ -68,7 +68,6 @@ class _ProfilePageState extends State<ProfilePage> {
         title: Text(
           "Your Profile",
         ),
-        centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.edit),

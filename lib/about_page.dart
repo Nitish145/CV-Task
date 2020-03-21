@@ -91,6 +91,9 @@ class _AboutPageState extends State<AboutPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Who Are We ?"),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[

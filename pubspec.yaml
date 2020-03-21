@@ -28,6 +28,8 @@ dependencies:
   flutter_svg:
   shared_preferences:
   url_launcher:
+  flutter_icons:
+  fluttertoast:
 
 dev_dependencies:
   flutter_test:
@@ -48,6 +50,7 @@ flutter:
     - assets/images/logos/
     - assets/images/SVGs/
     - assets/images/sign_in.png
+    - assets/images/CircuitVerse.png
 
   fonts:
     - family: Raleway

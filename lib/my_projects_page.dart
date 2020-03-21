@@ -14,7 +14,6 @@ class _MyProjectsPageState extends State<MyProjectsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("My Projects"),
-        centerTitle: true,
       ),
       body: FutureBuilder(
         future: getMyProjects(),
