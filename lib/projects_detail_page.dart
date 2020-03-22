@@ -41,6 +41,43 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
     );
   }
 
+  Widget getTagsRow(List<ProjectModel.Tag> tags) {
+    List<Widget> tagsList = tags
+        .map((tag) => Padding(
+              padding: const EdgeInsets.all(4),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Color.fromRGBO(230, 255, 230, 1),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(tag.name),
+                ),
+              ),
+            ))
+        .toList();
+    tagsList.insert(
+      0,
+      Padding(
+        padding: const EdgeInsets.all(4),
+        child: Text(
+          "Tags : ",
+          style: Theme.of(context)
+              .textTheme
+              .headline
+              .copyWith(fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+      child: Wrap(
+        children: tagsList,
+      ),
+    );
+  }
+
   String _parseHtmlString(String htmlString) {
     var document = parse(htmlString);
     String parsedString = parse(document.body.text).documentElement.text;
@@ -100,6 +137,11 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
                       "Views",
                       dataAttributes.view.toString(),
                     ),
+                    getTextRow(
+                      "Stars",
+                      dataAttributes.starsCount.toString(),
+                    ),
+                    getTagsRow(dataAttributes.tags),
                     getTextRow(
                       "Project Access Type",
                       dataAttributes.projectAccessType,

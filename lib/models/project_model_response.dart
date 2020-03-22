@@ -66,8 +66,10 @@ class DataAttributes {
   DateTime createdAt;
   DateTime updatedAt;
   ImagePreview imagePreview;
-  dynamic description;
+  String description;
   int view;
+  List<Tag> tags;
+  int starsCount;
 
   DataAttributes({
     this.name,
@@ -77,6 +79,8 @@ class DataAttributes {
     this.imagePreview,
     this.description,
     this.view,
+    this.tags,
+    this.starsCount,
   });
 
   factory DataAttributes.fromJson(Map<String, dynamic> json) => DataAttributes(
@@ -87,6 +91,8 @@ class DataAttributes {
         imagePreview: ImagePreview.fromJson(json["image_preview"]),
         description: json["description"],
         view: json["view"],
+        tags: List<Tag>.from(json["tags"].map((x) => Tag.fromJson(x))),
+        starsCount: json["stars_count"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -97,6 +103,8 @@ class DataAttributes {
         "image_preview": imagePreview.toJson(),
         "description": description,
         "view": view,
+        "tags": List<dynamic>.from(tags.map((x) => x.toJson())),
+        "stars_count": starsCount,
       };
 }
 
@@ -113,6 +121,34 @@ class ImagePreview {
 
   Map<String, dynamic> toJson() => {
         "url": url,
+      };
+}
+
+class Tag {
+  int id;
+  String name;
+  DateTime createdAt;
+  DateTime updatedAt;
+
+  Tag({
+    this.id,
+    this.name,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  factory Tag.fromJson(Map<String, dynamic> json) => Tag(
+        id: json["id"],
+        name: json["name"],
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "created_at": createdAt.toIso8601String(),
+        "updated_at": updatedAt.toIso8601String(),
       };
 }
 
