@@ -30,6 +30,7 @@ dependencies:
   url_launcher:
   flutter_icons:
   fluttertoast:
+  animations:
 
 dev_dependencies:
   flutter_test:

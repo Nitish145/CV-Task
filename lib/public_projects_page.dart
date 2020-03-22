@@ -9,23 +9,83 @@ class PublicProjectsPage extends StatefulWidget {
 }
 
 class _PublicProjectsPageState extends State<PublicProjectsPage> {
+  ScrollController _scrollController = new ScrollController();
+  List<Projects.Datum> dataList = new List();
+  bool isInitialLoading = true;
+  bool isNextPageLoading = false;
+  bool isError = false;
+  Projects.Meta meta;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        if (meta.nextPage != null) {
+          setState(() {
+            isNextPageLoading = true;
+          });
+          getPublicProjects(meta.nextPage).then((projectsResponse) {
+            projectsResponse.data.forEach((data) {
+              dataList.add(data);
+            });
+            setState(() {
+              meta = projectsResponse.meta;
+              isNextPageLoading = false;
+            });
+          }).catchError((e) {
+            setState(() {
+              isError = true;
+              isNextPageLoading = false;
+            });
+          });
+        }
+      }
+    });
+    getPublicProjects(1).then((projectsResponse) {
+      projectsResponse.data.forEach((data) {
+        dataList.add(data);
+      });
+      setState(() {
+        isInitialLoading = false;
+        meta = projectsResponse.meta;
+      });
+    }).catchError((e) {
+      setState(() {
+        isError = true;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Public Projects"),
       ),
-      body: FutureBuilder(
-        future: getPublicProjects(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.hasData) {
-              Projects.ProjectsResponse projectsResponse = snapshot.data;
-              return ListView.builder(
-                itemCount: projectsResponse.data.length,
+      body: !isError
+          ? isInitialLoading
+              ? Container(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              : ListView.builder(
+                controller: _scrollController,
+                itemCount: dataList.length,
                 itemBuilder: (context, index) {
-                  Projects.Datum datum = projectsResponse.data[index];
-                  Projects.DatumAttributes datumAttributes = datum.attributes;
+                  Projects.Datum datum = dataList[index];
+                  Projects.DatumAttributes datumAttributes =
+                      datum.attributes;
                   return ProjectCard(
                     id: int.parse(datum.id),
                     name: datumAttributes.name,
@@ -35,34 +95,21 @@ class _PublicProjectsPageState extends State<PublicProjectsPage> {
                     imageUrl: datumAttributes.imagePreview.url,
                   );
                 },
-              );
-            } else {
-              if (snapshot.hasError)
-                return Container(
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Center(
-                      child:
-                          Text("Something Went Wrong! Please try again later"),
-                    ),
-                  ),
-                );
-              else
-                return Container();
-            }
-          } else {
-            return Container(
+              )
+          : Container(
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
-              child: Center(
-                child: CircularProgressIndicator(),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Center(
+                  child: Text(
+                    "Something Went Wrong! Please try again later",
+                    style: Theme.of(context).textTheme.subhead,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
               ),
-            );
-          }
-        },
-      ),
+            ),
     );
   }
 }
