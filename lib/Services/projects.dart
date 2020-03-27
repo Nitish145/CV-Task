@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:cv_projects_task/globals.dart';
 import 'package:cv_projects_task/models/project_model_response.dart'
-as ProjectModel;
+    as ProjectModel;
 import 'package:cv_projects_task/models/projects_response.dart' as Projects;
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,7 +20,7 @@ Future<Projects.ProjectsResponse> getPublicProjects(int page) async {
     );
     final jsonResponse = jsonDecode(response.body);
     Projects.ProjectsResponse projectsResponse =
-    new Projects.ProjectsResponse.fromJson(jsonResponse);
+        new Projects.ProjectsResponse.fromJson(jsonResponse);
     print(response.body);
     return projectsResponse;
   } on Exception catch (e) {
@@ -40,7 +40,7 @@ Future<ProjectModel.ProjectModelResponse> getPublicProjectDetails(
     );
     final jsonResponse = jsonDecode(response.body);
     ProjectModel.ProjectModelResponse projectModelResponse =
-    new ProjectModel.ProjectModelResponse.fromJson(jsonResponse);
+        new ProjectModel.ProjectModelResponse.fromJson(jsonResponse);
     print(response.body);
     return projectModelResponse;
   } on Exception catch (e) {
@@ -62,7 +62,7 @@ Future<Projects.ProjectsResponse> getMyProjects(int page) async {
     );
     final jsonResponse = jsonDecode(response.body);
     Projects.ProjectsResponse projectsResponse =
-    new Projects.ProjectsResponse.fromJson(jsonResponse);
+        new Projects.ProjectsResponse.fromJson(jsonResponse);
     print(response.body);
     return projectsResponse;
   } on Exception catch (e) {
@@ -84,7 +84,7 @@ Future<ProjectModel.ProjectModelResponse> getMyProjectDetails(int id) async {
     );
     final jsonResponse = jsonDecode(response.body);
     ProjectModel.ProjectModelResponse projectModelResponse =
-    new ProjectModel.ProjectModelResponse.fromJson(jsonResponse);
+        new ProjectModel.ProjectModelResponse.fromJson(jsonResponse);
     print(response.body);
     return projectModelResponse;
   } on Exception catch (e) {

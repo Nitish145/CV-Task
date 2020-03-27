@@ -188,26 +188,24 @@ class _SignUpLoginPageState extends State<SignUpLoginPage> {
         title: Text("LogIn / SignUp"),
       ),
       body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: new Form(
-                  key: _formKey,
-                  child: Column(
-                    children: <Widget>[
-                      _signUpLogInImage(),
-                      _showEmailInput(),
-                      _showPasswordInput(),
-                      _showLoginButton(),
-                    ],
-                  ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: new Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    _signUpLogInImage(),
+                    _showEmailInput(),
+                    _showPasswordInput(),
+                    _showLoginButton(),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
