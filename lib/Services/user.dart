@@ -9,7 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 var header = {"Content-Type": "application/json"};
 http.Client client = new http.Client();
 
-Future<LoginResponse> userLogin(String email, String pass) async {
+Future<LoginResponse> userLogin(String email, String pass,
+    {http.Client httpClient}) async {
   String endpoint = "/api/v0/auth/login";
   String uri = url + endpoint;
   var json = {
@@ -17,7 +18,8 @@ Future<LoginResponse> userLogin(String email, String pass) async {
     "password": pass,
   };
   try {
-    var response = await client.post(
+    http.Client apiClient = httpClient == null ? client : httpClient;
+    var response = await apiClient.post(
       uri,
       headers: header,
       body: jsonEncode(json),
@@ -35,14 +37,15 @@ Future<LoginResponse> userLogin(String email, String pass) async {
   }
 }
 
-Future<UserResponse> userMeGet() async {
+Future<UserResponse> userMeGet({http.Client httpClient}) async {
   String endpoint = "/api/v0/user/me";
   String uri = url + endpoint;
   try {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString("token");
     header.addAll({"Authorization": "Token $token"});
-    var response = await client.get(
+    http.Client apiClient = httpClient == null ? client : httpClient;
+    var response = await apiClient.get(
       uri,
       headers: header,
     );
@@ -60,7 +63,8 @@ Future<UserResponse> updateUser(
     {String name,
     String educationalInstitute,
     String country,
-    bool isSubscribed}) async {
+    bool isSubscribed,
+    http.Client httpClient}) async {
   String endpoint = "/api/v0/user/me";
   String uri = url + endpoint;
   var json = {
@@ -73,7 +77,8 @@ Future<UserResponse> updateUser(
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString("token");
     header.addAll({"Authorization": "Token $token"});
-    var response = await client.patch(
+    http.Client apiClient = httpClient == null ? client : httpClient;
+    var response = await apiClient.patch(
       uri,
       headers: header,
       body: jsonEncode(json),

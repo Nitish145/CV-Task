@@ -10,11 +10,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 var header = {"Content-Type": "application/json"};
 http.Client client = new http.Client();
 
-Future<Projects.ProjectsResponse> getPublicProjects(int page) async {
+Future<Projects.ProjectsResponse> getPublicProjects(int page,
+    {http.Client httpClient}) async {
   String endpoint = "/api/v0/public_projects?page=$page";
   String uri = url + endpoint;
   try {
-    var response = await client.get(
+    http.Client apiClient = httpClient == null ? client : httpClient;
+    var response = await apiClient.get(
       uri,
       headers: header,
     );
@@ -29,12 +31,13 @@ Future<Projects.ProjectsResponse> getPublicProjects(int page) async {
   }
 }
 
-Future<ProjectModel.ProjectModelResponse> getPublicProjectDetails(
-    int id) async {
+Future<ProjectModel.ProjectModelResponse> getPublicProjectDetails(int id,
+    {http.Client httpClient}) async {
   String endpoint = "/api/v0/public_projects/$id";
   String uri = url + endpoint;
   try {
-    var response = await client.get(
+    http.Client apiClient = httpClient == null ? client : httpClient;
+    var response = await apiClient.get(
       uri,
       headers: header,
     );
@@ -49,14 +52,16 @@ Future<ProjectModel.ProjectModelResponse> getPublicProjectDetails(
   }
 }
 
-Future<Projects.ProjectsResponse> getMyProjects(int page) async {
+Future<Projects.ProjectsResponse> getMyProjects(int page,
+    {http.Client httpClient}) async {
   String endpoint = "/api/v0/projects?page=$page";
   String uri = url + endpoint;
   try {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString("token");
     header.addAll({"Authorization": "Token $token"});
-    var response = await client.get(
+    http.Client apiClient = httpClient == null ? client : httpClient;
+    var response = await apiClient.get(
       uri,
       headers: header,
     );
@@ -71,14 +76,16 @@ Future<Projects.ProjectsResponse> getMyProjects(int page) async {
   }
 }
 
-Future<ProjectModel.ProjectModelResponse> getMyProjectDetails(int id) async {
+Future<ProjectModel.ProjectModelResponse> getMyProjectDetails(int id,
+    {http.Client httpClient}) async {
   String endpoint = "/api/v0/projects/$id";
   String uri = url + endpoint;
   try {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString("token");
     header.addAll({"Authorization": "Token $token"});
-    var response = await client.get(
+    http.Client apiClient = httpClient == null ? client : httpClient;
+    var response = await apiClient.get(
       uri,
       headers: header,
     );
