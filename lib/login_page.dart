@@ -2,12 +2,12 @@ import 'package:cv_projects_task/Services/user.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SignUpLoginPage extends StatefulWidget {
+class LoginPage extends StatefulWidget {
   @override
-  _SignUpLoginPageState createState() => _SignUpLoginPageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _SignUpLoginPageState extends State<SignUpLoginPage> {
+class _LoginPageState extends State<LoginPage> {
   final _formKey = new GlobalKey<FormState>();
   String _email, _password;
   bool _isLoginButtonTapped = false;

@@ -1,14 +1,10 @@
 import 'dart:convert';
 
 import 'package:cv_projects_task/Services/projects.dart';
-import 'package:cv_projects_task/globals.dart';
 import 'package:cv_projects_task/models/projects_response.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
-import 'package:mockito/mockito.dart';
-
-class MockClient extends Mock implements http.Client {}
 
 const fakeProjectsResponse = {
   "data": [
@@ -105,43 +101,23 @@ const fakeProjectsResponse = {
 };
 
 main() {
-  MockClient client;
-
-  setUp(() {
-    // I use this method to initialize my environment for the tests
-    // basically api values and such
-    client = MockClient();
-  });
-
-  tearDown(() {
-    client.close();
-    clearInteractions(client);
-    reset(client);
-    client = null;
-  });
-
   group('fetchPublicProjects', () {
-    String endpoint = "/api/v0/public_projects";
-    String uri = url + endpoint;
-
     test('returns Public Projects if the http call completes successfully',
         () async {
-      // Use Mockito to return a successful response when it calls the
-      // provided http.Client.
-      when(client.get(argThat(startsWith(uri)))).thenAnswer(
-          (_) async => http.Response(json.encode(fakeProjectsResponse), 200));
-
-      expect(await getPublicProjects(1, httpClient: client),
-          const TypeMatcher<ProjectsResponse>());
+      MockClient mockClient = MockClient((request) async {
+        return http.Response(json.encode(fakeProjectsResponse), 200);
+      });
+      ProjectsResponse projectsResponse =
+          await getPublicProjects(1, httpClient: mockClient);
+      expect(projectsResponse.data.length, 2);
     });
 
-    test('throws an exception if the http call completes with an error', () {
-      // Use Mockito to return an unsuccessful response when it calls the
-      // provided http.Client.
-      when(client.get(argThat(startsWith(uri))))
-          .thenAnswer((_) async => http.Response('Not Found', 404));
-
-      expect(getPublicProjects(1, httpClient: client), throwsException);
+    test('raises Exception if the http call completes with an exception',
+        () async {
+      MockClient mockClient = MockClient((request) async {
+        return http.Response('Not Found', 404);
+      });
+      expect(getPublicProjects(1, httpClient: mockClient), throwsException);
     });
   });
 }

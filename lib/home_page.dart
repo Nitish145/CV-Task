@@ -4,7 +4,7 @@ import 'package:cv_projects_task/contributors_page.dart';
 import 'package:cv_projects_task/my_projects_page.dart';
 import 'package:cv_projects_task/profile_page.dart';
 import 'package:cv_projects_task/public_projects_page.dart';
-import 'package:cv_projects_task/signup_login_page.dart';
+import 'package:cv_projects_task/login_page.dart';
 import 'package:cv_projects_task/teachers_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -258,7 +258,7 @@ class _HomePageState extends State<HomePage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => SignUpLoginPage(),
+                              builder: (context) => LoginPage(),
                             ),
                           );
                         },

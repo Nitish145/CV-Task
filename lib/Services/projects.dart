@@ -27,7 +27,7 @@ Future<Projects.ProjectsResponse> getPublicProjects(int page,
     return projectsResponse;
   } on Exception catch (e) {
     print(e);
-    return null;
+    throw Exception(e);
   }
 }
 
@@ -48,7 +48,7 @@ Future<ProjectModel.ProjectModelResponse> getPublicProjectDetails(int id,
     return projectModelResponse;
   } on Exception catch (e) {
     print(e);
-    return null;
+    throw Exception(e);
   }
 }
 
@@ -72,7 +72,7 @@ Future<Projects.ProjectsResponse> getMyProjects(int page,
     return projectsResponse;
   } on Exception catch (e) {
     print(e);
-    return null;
+    throw Exception(e);
   }
 }
 
@@ -96,6 +96,6 @@ Future<ProjectModel.ProjectModelResponse> getMyProjectDetails(int id,
     return projectModelResponse;
   } on Exception catch (e) {
     print(e);
-    return null;
+    throw Exception(e);
   }
 }

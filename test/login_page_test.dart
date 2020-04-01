@@ -1,14 +1,18 @@
-import "package:cv_projects_task/signup_login_page.dart";
+import "package:cv_projects_task/login_page.dart";
 import "package:flutter/material.dart";
 import "package:flutter_test/flutter_test.dart";
 
 void main() {
-  testWidgets("Renders", (WidgetTester tester) async {
+  Future<void> pumpLogInPage(WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: SignUpLoginPage(),
+        home: LoginPage(),
       ),
     );
+  }
+
+  testWidgets("Renders", (WidgetTester tester) async {
+    await pumpLogInPage(tester);
 
     expect(find.text("LOGIN"), findsOneWidget);
     expect(find.byType(TextFormField), findsNWidgets(2));
@@ -16,11 +20,8 @@ void main() {
   });
 
   testWidgets('Form requires email and password', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      MaterialApp(
-        home: SignUpLoginPage(),
-      ),
-    );
+    await pumpLogInPage(tester);
+
     final Finder loginButton = find.widgetWithText(FlatButton, 'LOGIN');
     await tester.tap(loginButton);
     await tester.pump();
