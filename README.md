@@ -2,6 +2,26 @@
 
 This application contains MVP for the CircuitVerse Mobile.
 
+## Setup Instructions
+
+### Server Setup
+We will be using `ngrok` to setup tunnel between `localhost` and `API`.
+
+- Install `ngrok`.
+- Open Terminal `(Ctrl + Alt + T)`
+- `~ ngrok http 3000`
+- Setup [CircuitVerse/CircuitVerse](https://github.com/CircuitVerse/CircuitVerse) on your machine (Instructions in `Readme.md`).
+- Add `config.hosts << "{ngrok-base-url-without-http://}"` in `config/environments/development.rb`
+- `rails s`
+
+### Mobile App Setup
+- Clone this repo.
+- open in VScode/AndroidStudio.
+- Go to `globals.dart`.
+- Replace `url` with `ngrok-base-url`.
+- Run the app with `flutter run`.
+- See you localhost server live on Mobile.
+
 ## Below attatched are some GIFs attatched for CV Mobile
 
 <p>
