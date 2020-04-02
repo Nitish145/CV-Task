@@ -1,6 +1,8 @@
 import 'package:cv_projects_task/about_page.dart';
 import 'package:cv_projects_task/components/feature_card.dart';
 import 'package:cv_projects_task/contributors_page.dart';
+import 'package:cv_projects_task/globals.dart';
+import 'package:cv_projects_task/keys.dart';
 import 'package:cv_projects_task/my_projects_page.dart';
 import 'package:cv_projects_task/profile_page.dart';
 import 'package:cv_projects_task/public_projects_page.dart';
@@ -156,6 +158,7 @@ class _HomePageState extends State<HomePage> {
               child: Image.asset("assets/images/CircuitVerse.png"),
             ),
             InkWell(
+              key: Key(Keys.aboutDrawerTile),
               child: drawerTile("About", FontAwesome5.address_card),
               onTap: () {
                 Navigator.pop(context);
@@ -168,6 +171,7 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             InkWell(
+              key: Key(Keys.contributeDrawerTile),
               child: drawerTile("Contribute", Icons.add),
               onTap: () {
                 Navigator.pop(context);
@@ -180,6 +184,7 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             InkWell(
+              key: Key(Keys.teachersDrawerTile),
               child: drawerTile("Teachers", Icons.account_balance),
               onTap: () {
                 Navigator.pop(context);
@@ -192,6 +197,7 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             InkWell(
+              key: Key(Keys.publicProjectsDrawerTile),
               child: drawerTile("Public Projects", Ionicons.md_paper),
               onTap: () {
                 Navigator.pop(context);
@@ -215,6 +221,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         children: <Widget>[
                           InkWell(
+                            key: Key(Keys.profileDrawerTile),
                             child: drawerTile("Profile", FontAwesome5.user),
                             onTap: () {
                               Navigator.pop(context);
@@ -227,6 +234,7 @@ class _HomePageState extends State<HomePage> {
                             },
                           ),
                           InkWell(
+                            key: Key(Keys.myProjectsDrawerTile),
                             child: drawerTile(
                                 "My Projects", FontAwesome5.address_book),
                             onTap: () {
@@ -240,6 +248,7 @@ class _HomePageState extends State<HomePage> {
                             },
                           ),
                           InkWell(
+                            key: Key(Keys.logoutDrawerTile),
                             child: drawerTile("Log Out", Ionicons.ios_log_out),
                             onTap: () {
                               Navigator.pop(context);
@@ -252,6 +261,7 @@ class _HomePageState extends State<HomePage> {
                         ],
                       )
                     : InkWell(
+                        key: Key(Keys.loginDrawerTile),
                         child: drawerTile("Login", Ionicons.ios_log_in),
                         onTap: () {
                           Navigator.pop(context);
@@ -271,6 +281,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: homePageScaffoldKey,
       appBar: getAppBar(),
       drawer: _drawer(context),
       body: Container(

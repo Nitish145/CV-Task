@@ -23,3 +23,5 @@ launchURL(String url) async {
     throw 'Could not launch $url';
   }
 }
+
+GlobalKey<ScaffoldState> homePageScaffoldKey = new GlobalKey<ScaffoldState>();
