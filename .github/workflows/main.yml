@@ -1,4 +1,4 @@
-name: Test and build
+name: Checks if all tests passes
 on:
   push:
     branches:
@@ -7,7 +7,7 @@ on:
       branches:
         - master
 jobs:
-  test_and_build:
+  test:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v1
@@ -19,4 +19,3 @@ jobs:
           flutter-version: "1.9.1+hotfix.6"
       - run: flutter pub get
       - run: flutter test
-      - run: flutter build apk
