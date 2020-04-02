@@ -7,42 +7,7 @@ import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_test_utils/image_test_utils.dart';
 
-const fakePublicProjectDetails = {
-  "data": {
-    "id": "8",
-    "type": "project",
-    "attributes": {
-      "name": "Test Title",
-      "project_access_type": "Public",
-      "created_at": "2020-03-18T17:26:26.312Z",
-      "updated_at": "2020-03-18T17:26:26.312Z",
-      "image_preview": {"url": "/img/default.png"},
-      "description": null,
-      "view": 1,
-      "tags": [],
-      "stars_count": 0
-    },
-    "relationships": {
-      "author": {
-        "data": {"id": "3", "type": "author"}
-      }
-    }
-  },
-  "included": [
-    {
-      "id": "3",
-      "type": "author",
-      "attributes": {"name": "Test User", "email": "test@test.com"},
-      "relationships": {
-        "projects": {
-          "data": [
-            {"id": "8", "type": "project"}
-          ]
-        }
-      }
-    }
-  ]
-};
+import 'fake_test_data.dart';
 
 void main() {
   Future<void> pumpProjectDetailsPage(
@@ -58,7 +23,7 @@ void main() {
     testWidgets('loads and shows project details', (WidgetTester tester) async {
       provideMockedNetworkImages(() async {
         MockClient mockClient = MockClient((request) async {
-          return http.Response(json.encode(fakePublicProjectDetails), 200);
+          return http.Response(json.encode(fakeProjectDetailsResponse), 200);
         });
         await pumpProjectDetailsPage(tester, mockClient);
         await tester.pumpAndSettle();

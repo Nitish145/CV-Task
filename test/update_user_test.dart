@@ -7,29 +7,13 @@ import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-const fakeUserMeUpdate = {
-  "data": {
-    "id": "1",
-    "type": "user",
-    "attributes": {
-      "id": 1,
-      "email": "test@test.com",
-      "name": "test",
-      "admin": true,
-      "country": "IN",
-      "educational_institute": "Indian Institute of Technology Roorkee",
-      "subscribed": false,
-      "created_at": "2020-02-04T21:27:07.041Z",
-      "updated_at": "2020-03-30T15:07:22.487Z"
-    }
-  }
-};
+import 'fake_test_data.dart';
 
 void main() {
   group("Tests User Update API call", () {
     test('updates user info and return status 202', () async {
       MockClient mockClient = MockClient((request) async {
-        return http.Response(json.encode(fakeUserMeUpdate), 202);
+        return http.Response(json.encode(fakeUserResponse), 202);
       });
       SharedPreferences.setMockInitialValues({"token": "test_token"});
       SharedPreferences prefs = await SharedPreferences.getInstance();

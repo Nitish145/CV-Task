@@ -6,11 +6,7 @@ import "package:flutter_test/flutter_test.dart";
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 
-const fakeLoginResponse = {
-  "token": "test_token",
-  "exp": "04-02-2021 00:00",
-  "username": "Test User"
-};
+import 'fake_test_data.dart';
 
 void main() {
   Future<void> pumpLogInPage(WidgetTester tester, {http.Client client}) async {
