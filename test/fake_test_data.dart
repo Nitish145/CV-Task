@@ -47,7 +47,14 @@ const fakeProjectsResponse = {
         "image_preview": {"url": "/img/default.png"},
         "description": null,
         "view": 4,
-        "tags": [],
+        "tags": [
+          {
+            "id": 1,
+            "name": "CV",
+            "created_at": "2020-03-10T13:02:10.381Z",
+            "updated_at": "2020-03-10T13:02:10.381Z"
+          },
+        ],
         "stars_count": 1
       },
       "relationships": {
@@ -70,7 +77,14 @@ const fakeProjectsResponse = {
         },
         "description": "",
         "view": 2,
-        "tags": [],
+        "tags": [
+          {
+            "id": 1,
+            "name": "CV",
+            "created_at": "2020-03-10T13:02:10.381Z",
+            "updated_at": "2020-03-10T13:02:10.381Z"
+          },
+        ],
         "stars_count": 1
       },
       "relationships": {
@@ -136,7 +150,14 @@ const fakeProjectDetailsResponse = {
       "image_preview": {"url": "/img/default.png"},
       "description": null,
       "view": 1,
-      "tags": [],
+      "tags": [
+        {
+          "id": 1,
+          "name": "CV",
+          "created_at": "2020-03-10T13:02:10.381Z",
+          "updated_at": "2020-03-10T13:02:10.381Z"
+        },
+      ],
       "stars_count": 0
     },
     "relationships": {
