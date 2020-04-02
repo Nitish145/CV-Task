@@ -4,14 +4,17 @@ import 'package:cv_projects_task/models/project_model_response.dart'
     as ProjectModel;
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
+import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:transparent_image/transparent_image.dart';
 
 class ProjectDetailPage extends StatefulWidget {
+  final Client client;
   final int id;
 
-  const ProjectDetailPage({Key key, this.id}) : super(key: key);
+  const ProjectDetailPage({Key key, this.client, @required this.id})
+      : super(key: key);
 
   @override
   _ProjectDetailPageState createState() => _ProjectDetailPageState();
@@ -93,7 +96,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> {
         ),
       ),
       body: FutureBuilder(
-        future: getPublicProjectDetails(widget.id),
+        future: getPublicProjectDetails(widget.id, httpClient: widget.client),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasData) {

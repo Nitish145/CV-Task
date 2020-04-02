@@ -75,27 +75,3 @@ Future<Projects.ProjectsResponse> getMyProjects(int page,
     throw Exception(e);
   }
 }
-
-Future<ProjectModel.ProjectModelResponse> getMyProjectDetails(int id,
-    {http.Client httpClient}) async {
-  String endpoint = "/api/v0/projects/$id";
-  String uri = url + endpoint;
-  try {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String token = prefs.getString("token");
-    header.addAll({"Authorization": "Token $token"});
-    http.Client apiClient = httpClient == null ? client : httpClient;
-    var response = await apiClient.get(
-      uri,
-      headers: header,
-    );
-    final jsonResponse = jsonDecode(response.body);
-    ProjectModel.ProjectModelResponse projectModelResponse =
-        new ProjectModel.ProjectModelResponse.fromJson(jsonResponse);
-    print(response.body);
-    return projectModelResponse;
-  } on Exception catch (e) {
-    print(e);
-    throw Exception(e);
-  }
-}

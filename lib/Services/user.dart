@@ -33,7 +33,7 @@ Future<LoginResponse> userLogin(String email, String pass,
     return null;
   } on Exception catch (e) {
     print(e);
-    return null;
+    throw Exception(e);
   }
 }
 
@@ -55,7 +55,7 @@ Future<UserResponse> userMeGet({http.Client httpClient}) async {
     return userResponse;
   } on Exception catch (e) {
     print(e);
-    return null;
+    throw Exception(e);
   }
 }
 
@@ -92,6 +92,6 @@ Future<UserResponse> updateUser(
     return null;
   } on Exception catch (e) {
     print(e);
-    return null;
+    throw Exception(e);
   }
 }

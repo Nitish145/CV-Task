@@ -2,8 +2,12 @@ import 'package:cv_projects_task/Services/projects.dart';
 import 'package:cv_projects_task/components/project_card.dart';
 import 'package:cv_projects_task/models/projects_response.dart' as Projects;
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 
 class MyProjectsPage extends StatefulWidget {
+  final Client client;
+
+  const MyProjectsPage({Key key, this.client}) : super(key: key);
   @override
   _MyProjectsPageState createState() => _MyProjectsPageState();
 }
@@ -26,7 +30,8 @@ class _MyProjectsPageState extends State<MyProjectsPage> {
           setState(() {
             isNextPageLoading = true;
           });
-          getMyProjects(meta.nextPage).then((projectsResponse) {
+          getMyProjects(meta.nextPage, httpClient: widget.client)
+              .then((projectsResponse) {
             projectsResponse.data.forEach((data) {
               dataList.add(data);
             });
@@ -43,7 +48,7 @@ class _MyProjectsPageState extends State<MyProjectsPage> {
         }
       }
     });
-    getMyProjects(1).then((projectsResponse) {
+    getMyProjects(1, httpClient: widget.client).then((projectsResponse) {
       projectsResponse.data.forEach((data) {
         dataList.add(data);
       });

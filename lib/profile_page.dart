@@ -1,9 +1,13 @@
 import 'package:cv_projects_task/Services/user.dart';
 import 'package:cv_projects_task/models/user_response.dart' as User;
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class ProfilePage extends StatefulWidget {
+  final Client client;
+
+  const ProfilePage({Key key, this.client}) : super(key: key);
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
@@ -75,7 +79,7 @@ class _ProfilePageState extends State<ProfilePage> {
         onPressed: () {},
       ),
       body: FutureBuilder(
-        future: userMeGet(),
+        future: userMeGet(httpClient: widget.client),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasData) {

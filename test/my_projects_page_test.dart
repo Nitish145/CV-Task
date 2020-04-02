@@ -1,35 +1,16 @@
 import 'dart:convert';
 
 import 'package:cv_projects_task/components/project_card.dart';
-import 'package:cv_projects_task/public_projects_page.dart';
+import 'package:cv_projects_task/my_projects_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_test_utils/image_test_utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-const fakeProjectsResponse = {
+const fakeMyProjectsResponse = {
   "data": [
-    {
-      "id": "8",
-      "type": "project",
-      "attributes": {
-        "name": "Test Title",
-        "project_access_type": "Public",
-        "created_at": "2020-03-18T17:26:26.312Z",
-        "updated_at": "2020-03-18T17:26:26.312Z",
-        "image_preview": {"url": "/img/default.png"},
-        "description": null,
-        "view": 1,
-        "tags": [],
-        "stars_count": 0
-      },
-      "relationships": {
-        "author": {
-          "data": {"id": "3", "type": "author"}
-        }
-      }
-    },
     {
       "id": "9",
       "type": "project",
@@ -42,7 +23,7 @@ const fakeProjectsResponse = {
           "url":
               "/uploads/project/image_preview/9/preview_2020-03-19_09_46_53_%2B0530.jpeg"
         },
-        "description": "<p>Hey there, Loving CircuitVerse</p>",
+        "description": " <p>Hey there, Loving Circuitverse</p>",
         "view": 1,
         "tags": [
           {
@@ -59,24 +40,52 @@ const fakeProjectsResponse = {
           "data": {"id": "1", "type": "author"}
         }
       }
-    }
-  ],
-  "included": [
+    },
     {
-      "id": "3",
-      "type": "author",
+      "id": "12",
+      "type": "project",
       "attributes": {
-        "name": "Nitish Aggarwal",
-        "email": "royalnitish31@gmail.com"
+        "name": "Nitish Aggarwal/Test",
+        "project_access_type": "Private",
+        "created_at": "2020-03-28T04:14:34.683Z",
+        "updated_at": "2020-03-28T05:07:05.530Z",
+        "image_preview": {"url": "/img/default.png"},
+        "description": null,
+        "view": 4,
+        "tags": [],
+        "stars_count": 1
       },
       "relationships": {
-        "projects": {
-          "data": [
-            {"id": "8", "type": "project"}
-          ]
+        "author": {
+          "data": {"id": "1", "type": "author"}
         }
       }
     },
+    {
+      "id": "10",
+      "type": "project",
+      "attributes": {
+        "name": "Test 3",
+        "project_access_type": "Public",
+        "created_at": "2020-03-21T18:55:54.528Z",
+        "updated_at": "2020-03-28T04:51:21.479Z",
+        "image_preview": {
+          "url":
+              "/uploads/project/image_preview/10/preview_2020-03-22_00_25_54_%2B0530.jpeg"
+        },
+        "description": "",
+        "view": 2,
+        "tags": [],
+        "stars_count": 1
+      },
+      "relationships": {
+        "author": {
+          "data": {"id": "1", "type": "author"}
+        }
+      }
+    }
+  ],
+  "included": [
     {
       "id": "1",
       "type": "author",
@@ -98,27 +107,30 @@ const fakeProjectsResponse = {
     "next_page": 2,
     "prev_page": null,
     "total_pages": 2,
-    "total_count": 5
+    "total_count": 4
   }
 };
 
 main() {
-  Future<void> pumpPublicProjectsPage(
+  Future<void> pumpMyProjectsPage(
       WidgetTester tester, http.Client client) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: PublicProjectsPage(client: client),
+        home: MyProjectsPage(client: client),
       ),
     );
   }
 
-  group('Tests Public Projects API call and relevant widget renders', () {
-    testWidgets('load and shows public projects', (WidgetTester tester) async {
+  group('Tests My Projects API call and relevant widget renders', () {
+    testWidgets('load and shows my projects', (WidgetTester tester) async {
       provideMockedNetworkImages(() async {
         MockClient mockClient = MockClient((request) async {
-          return http.Response(json.encode(fakeProjectsResponse), 200);
+          return http.Response(json.encode(fakeMyProjectsResponse), 200);
         });
-        await pumpPublicProjectsPage(tester, mockClient);
+        SharedPreferences.setMockInitialValues({"token": "test_token"});
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString("token", "test_token");
+        await pumpMyProjectsPage(tester, mockClient);
         await tester.pumpAndSettle();
 
         expect(find.byType(ProjectCard), findsNWidgets(2));
@@ -130,7 +142,7 @@ main() {
         MockClient mockClient = MockClient((request) async {
           return http.Response('Not Found', 404);
         });
-        await pumpPublicProjectsPage(tester, mockClient);
+        await pumpMyProjectsPage(tester, mockClient);
         await tester.pumpAndSettle();
 
         expect(find.text("Something Went Wrong! Please try again later"),

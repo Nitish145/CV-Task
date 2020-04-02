@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-import 'package:cv_projects_task/profile_page.dart';
-import 'package:flutter/material.dart';
+import 'package:cv_projects_task/Services/user.dart';
+import 'package:cv_projects_task/models/user_response.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-const fakeUserMeGet = {
+const fakeUserMeUpdate = {
   "data": {
     "id": "1",
     "type": "user",
@@ -26,38 +26,24 @@ const fakeUserMeGet = {
 };
 
 void main() {
-  Future<void> pumpProfilePage(WidgetTester tester, http.Client client) async {
-    await tester.pumpWidget(
-      MaterialApp(
-        home: ProfilePage(client: client),
-      ),
-    );
-  }
-
-  group("Tests User Profile API call and relevant widget renders", () {
-    testWidgets('loads and shows user profile', (WidgetTester tester) async {
+  group("Tests User Update API call", () {
+    test('updates user info and return status 202', () async {
       MockClient mockClient = MockClient((request) async {
-        return http.Response(json.encode(fakeUserMeGet), 200);
+        return http.Response(json.encode(fakeUserMeUpdate), 202);
       });
       SharedPreferences.setMockInitialValues({"token": "test_token"});
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString("token", "test_token");
-      await pumpProfilePage(tester, mockClient);
-      await tester.pumpAndSettle();
 
-      expect(find.text("test"), findsOneWidget);
-      expect(find.text("test@test.com"), findsOneWidget);
+      UserResponse userResponse = await updateUser(httpClient: mockClient);
+      expect(userResponse.data.attributes.name, "test");
     });
 
-    testWidgets('loads and shows an error', (WidgetTester tester) async {
+    test('throws exception on error', () async {
       MockClient mockClient = MockClient((request) async {
         return http.Response('Not Found', 404);
       });
-      await pumpProfilePage(tester, mockClient);
-      await tester.pumpAndSettle();
-
-      expect(find.text("Something Went Wrong! Please try again later"),
-          findsOneWidget);
+      expect(updateUser(httpClient: mockClient), throwsException);
     });
   });
 }

@@ -1,8 +1,12 @@
 import 'package:cv_projects_task/Services/user.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
+  final Client client;
+
+  const LoginPage({Key key, this.client}) : super(key: key);
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -150,7 +154,7 @@ class _LoginPageState extends State<LoginPage> {
         _isLoginButtonTapped = true;
       });
       FocusScope.of(context).requestFocus(new FocusNode());
-      userLogin(_email, _password).then((login) {
+      userLogin(_email, _password, httpClient: widget.client).then((login) {
         if (login != null) {
           _showSnackBar("Login Successful");
           setState(() {
