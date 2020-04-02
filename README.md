@@ -1,4 +1,6 @@
 # CV-Task
+[![Coverage Status](https://coveralls.io/repos/github/Nitish145/CV-Task/badge.svg?branch=master)](https://coveralls.io/github/Nitish145/CV-Task?branch=master)
+[![Build Status](https://travis-ci.org/Nitish145/CV-Task.svg?branch=master)](https://travis-ci.org/Nitish145/CV-Task)
 
 This application contains MVP for the CircuitVerse Mobile.
 
