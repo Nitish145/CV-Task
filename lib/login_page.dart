@@ -155,23 +155,19 @@ class _LoginPageState extends State<LoginPage> {
       });
       FocusScope.of(context).requestFocus(new FocusNode());
       userLogin(_email, _password, httpClient: widget.client).then((login) {
-        if (login != null) {
-          _showSnackBar("Login Successful");
-          setState(() {
-            _isLoginSuccessful = true;
-            _isLoginButtonTapped = false;
-          });
-          SharedPreferences.getInstance().then((prefs) {
-            prefs.setString("token", login.token);
-            prefs.setBool("isLoggedIn", true);
-            prefs.setString("currentUserName", login.username);
-          });
-          Future.delayed(Duration(seconds: 1), () {
-            Navigator.pop(context);
-          });
-        } else {
-          resetLogin();
-        }
+        _showSnackBar("Login Successful");
+        setState(() {
+          _isLoginSuccessful = true;
+          _isLoginButtonTapped = false;
+        });
+        SharedPreferences.getInstance().then((prefs) {
+          prefs.setString("token", login.token);
+          prefs.setBool("isLoggedIn", true);
+          prefs.setString("currentUserName", login.username);
+        });
+        Future.delayed(Duration(seconds: 1), () {
+          Navigator.pop(context);
+        });
       }).catchError((e) {
         resetLogin();
       });
