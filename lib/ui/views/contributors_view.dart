@@ -1,14 +1,14 @@
-import 'package:cv_projects_task/components/contribute_card_donate.dart';
-import 'package:cv_projects_task/components/contribute_card_social.dart';
-import 'package:cv_projects_task/components/contribute_card_support.dart';
+import 'package:cv_projects_task/ui/components/contribute_card_donate.dart';
+import 'package:cv_projects_task/ui/components/contribute_card_social.dart';
+import 'package:cv_projects_task/ui/components/contribute_card_support.dart';
 import 'package:flutter/material.dart';
 
-class ContributorsPage extends StatefulWidget {
+class ContributorsView extends StatefulWidget {
   @override
-  _ContributorsPageState createState() => _ContributorsPageState();
+  _ContributorsViewState createState() => _ContributorsViewState();
 }
 
-class _ContributorsPageState extends State<ContributorsPage> {
+class _ContributorsViewState extends State<ContributorsView> {
   Widget getHeader() {
     return Padding(
       padding: const EdgeInsets.all(16.0),

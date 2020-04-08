@@ -1,12 +1,12 @@
-import 'package:cv_projects_task/components/teachers_card.dart';
+import 'package:cv_projects_task/ui/components/teachers_card.dart';
 import 'package:flutter/material.dart';
 
-class TeachersPage extends StatefulWidget {
+class TeachersView extends StatefulWidget {
   @override
-  _TeachersPageState createState() => _TeachersPageState();
+  _TeachersViewState createState() => _TeachersViewState();
 }
 
-class _TeachersPageState extends State<TeachersPage> {
+class _TeachersViewState extends State<TeachersView> {
   Widget getHeader() {
     return Padding(
       padding: const EdgeInsets.all(16.0),

@@ -1,24 +1,17 @@
-import 'package:cv_projects_task/about_page.dart';
-import 'package:cv_projects_task/components/feature_card.dart';
-import 'package:cv_projects_task/contributors_page.dart';
 import 'package:cv_projects_task/globals.dart';
 import 'package:cv_projects_task/keys.dart';
-import 'package:cv_projects_task/my_projects_page.dart';
-import 'package:cv_projects_task/profile_page.dart';
-import 'package:cv_projects_task/public_projects_page.dart';
-import 'package:cv_projects_task/login_page.dart';
-import 'package:cv_projects_task/teachers_page.dart';
+import 'package:cv_projects_task/ui/components/feature_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class HomePage extends StatefulWidget {
+class HomeView extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomeViewState createState() => _HomeViewState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomeViewState extends State<HomeView> {
   SharedPreferences prefs;
 
   @override
@@ -110,12 +103,7 @@ class _HomePageState extends State<HomePage> {
               width: 2,
             ),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => TeachersPage(),
-                ),
-              );
+              Navigator.pushNamed(context, "teachers");
             },
           ),
         ),
@@ -128,12 +116,7 @@ class _HomePageState extends State<HomePage> {
               width: 2,
             ),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ContributorsPage(),
-                ),
-              );
+              Navigator.pushNamed(context, "contribute");
             },
           ),
         ),
@@ -162,12 +145,7 @@ class _HomePageState extends State<HomePage> {
               child: drawerTile("About", FontAwesome5.address_card),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AboutPage(),
-                  ),
-                );
+                Navigator.pushNamed(context, "about");
               },
             ),
             InkWell(
@@ -175,12 +153,7 @@ class _HomePageState extends State<HomePage> {
               child: drawerTile("Contribute", Icons.add),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ContributorsPage(),
-                  ),
-                );
+                Navigator.pushNamed(context, "contribute");
               },
             ),
             InkWell(
@@ -188,12 +161,7 @@ class _HomePageState extends State<HomePage> {
               child: drawerTile("Teachers", Icons.account_balance),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => TeachersPage(),
-                  ),
-                );
+                Navigator.pushNamed(context, "teachers");
               },
             ),
             InkWell(
@@ -201,12 +169,7 @@ class _HomePageState extends State<HomePage> {
               child: drawerTile("Public Projects", Ionicons.md_paper),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PublicProjectsPage(),
-                  ),
-                );
+                Navigator.pushNamed(context, "public_projects");
               },
             ),
             prefs != null
@@ -225,12 +188,7 @@ class _HomePageState extends State<HomePage> {
                             child: drawerTile("Profile", FontAwesome5.user),
                             onTap: () {
                               Navigator.pop(context);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ProfilePage(),
-                                ),
-                              );
+                              Navigator.pushNamed(context, "profile");
                             },
                           ),
                           InkWell(
@@ -239,12 +197,7 @@ class _HomePageState extends State<HomePage> {
                                 "My Projects", FontAwesome5.address_book),
                             onTap: () {
                               Navigator.pop(context);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => MyProjectsPage(),
-                                ),
-                              );
+                              Navigator.pushNamed(context, "my_projects");
                             },
                           ),
                           InkWell(
@@ -265,12 +218,7 @@ class _HomePageState extends State<HomePage> {
                         child: drawerTile("Login", Ionicons.ios_log_in),
                         onTap: () {
                           Navigator.pop(context);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => LoginPage(),
-                            ),
-                          );
+                          Navigator.pushNamed(context, "login");
                         },
                       )
                 : Container()

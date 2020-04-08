@@ -1,5 +1,4 @@
 import 'package:cv_projects_task/globals.dart';
-import 'package:cv_projects_task/projects_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -75,14 +74,7 @@ class ProjectCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProjectDetailPage(
-              id: id,
-            ),
-          ),
-        );
+        Navigator.pushNamed(context, "project_details", arguments: id);
       },
       child: Padding(
         padding: const EdgeInsets.all(16.0),

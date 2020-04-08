@@ -1,15 +1,15 @@
-import 'package:cv_projects_task/components/contribute_card_social.dart';
-import 'package:cv_projects_task/components/team_card.dart';
 import 'package:cv_projects_task/globals.dart';
 import 'package:cv_projects_task/models/team_member_model.dart';
+import 'package:cv_projects_task/ui/components/contribute_card_social.dart';
+import 'package:cv_projects_task/ui/components/team_card.dart';
 import 'package:flutter/material.dart';
 
-class AboutPage extends StatefulWidget {
+class AboutView extends StatefulWidget {
   @override
-  _AboutPageState createState() => _AboutPageState();
+  _AboutViewState createState() => _AboutViewState();
 }
 
-class _AboutPageState extends State<AboutPage> {
+class _AboutViewState extends State<AboutView> {
   Widget getHeader() {
     return Padding(
       padding: const EdgeInsets.all(16.0),
