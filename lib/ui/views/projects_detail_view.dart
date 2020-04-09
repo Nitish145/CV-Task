@@ -97,6 +97,7 @@ class _ProjectDetailViewState extends State<ProjectDetailView> {
       onModelReady: (model) =>
           model.getProjectDetails(widget.id, client: widget.client),
       builder: (context, model, child) => Scaffold(
+        key: projectDetailsViewScaffoldKey,
         appBar: AppBar(
           title: Text(
             "Project Details Page",
@@ -105,7 +106,9 @@ class _ProjectDetailViewState extends State<ProjectDetailView> {
         body: model.state == ViewState.Busy
             ? LoadingIndicator()
             : model.state == ViewState.Error
-                ? CVErrorWidget(errorMessage: model.errorMessage)
+                ? CVErrorWidget(
+                    errorMessage: model.errorMessage,
+                  )
                 : Builder(
                     builder: (context) {
                       ProjectModel.ProjectModelResponse projectModelResponse =

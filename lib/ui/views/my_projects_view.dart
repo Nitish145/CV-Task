@@ -1,4 +1,5 @@
 import 'package:cv_projects_task/enums/view_state.dart';
+import 'package:cv_projects_task/globals.dart';
 import 'package:cv_projects_task/models/projects_response.dart' as Projects;
 import 'package:cv_projects_task/ui/components/error_widget.dart';
 import 'package:cv_projects_task/ui/components/loading_indicator.dart';
@@ -33,7 +34,8 @@ class _MyProjectsViewState extends State<MyProjectsView> {
         _scrollController.addListener(() {
           if (_scrollController.position.pixels ==
               _scrollController.position.maxScrollExtent) {
-            if (model.myProjects.meta.nextPage != null) {
+            if (model.myProjects.meta.nextPage != null &&
+                !model.isNextPageLoading) {
               model
                   .getMyProjects(model.myProjects.meta.nextPage,
                       client: widget.client)
@@ -41,12 +43,8 @@ class _MyProjectsViewState extends State<MyProjectsView> {
                 model.myProjects.data.forEach((data) {
                   dataList.add(data);
                 });
-                model.isNextPageLoading = true;
               }).catchError((e) {
-                model.setState(ViewState.Error);
-                model.setErrorMessage(
-                    "Something Went Wrong! Please try again later");
-                model.isNextPageLoading = false;
+                showSnackBar(myProjectsViewScaffoldKey, model.errorMessage);
               });
             }
           }
@@ -55,12 +53,12 @@ class _MyProjectsViewState extends State<MyProjectsView> {
           model.myProjects.data.forEach((data) {
             dataList.add(data);
           });
-          model.setState(ViewState.Idle);
         }).catchError((e) {
-          model.setState(ViewState.Error);
+          showSnackBar(myProjectsViewScaffoldKey, model.errorMessage);
         });
       },
       builder: (context, model, child) => Scaffold(
+        key: myProjectsViewScaffoldKey,
         appBar: AppBar(
           title: Text("My Projects"),
         ),
@@ -84,7 +82,9 @@ class _MyProjectsViewState extends State<MyProjectsView> {
                       );
                     },
                   )
-            : CVErrorWidget(),
+            : CVErrorWidget(
+                errorMessage: model.errorMessage,
+              ),
       ),
     );
   }

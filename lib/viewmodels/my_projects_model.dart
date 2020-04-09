@@ -1,5 +1,6 @@
 import 'package:cv_projects_task/enums/view_state.dart';
 import 'package:cv_projects_task/locator.dart';
+import 'package:cv_projects_task/models/failure_model.dart';
 import 'package:cv_projects_task/models/projects_response.dart';
 import 'package:cv_projects_task/services/projects.dart';
 import 'package:cv_projects_task/viewmodels/base_model.dart';
@@ -21,20 +22,21 @@ class MyProjectsModel extends BaseModel {
 
   ProjectsResponse get myProjects => _myProjects;
 
-  set setMyProjects(ProjectsResponse myProjects) {
+  set myProjects(ProjectsResponse myProjects) {
     _myProjects = myProjects;
+    notifyListeners();
   }
 
   Future getMyProjects(int page, {http.Client client}) async {
     setState(ViewState.Busy);
     try {
-      if (page > 1) _isNextPageLoading = true;
-      _myProjects = await _projectsApi.getMyProjects(page, httpClient: client);
-      _isNextPageLoading = false;
+      if (page > 1) isNextPageLoading = true;
+      myProjects = await _projectsApi.getMyProjects(page, httpClient: client);
+      isNextPageLoading = false;
       setState(ViewState.Idle);
-    } on Exception catch (e) {
-      print(e);
-      setErrorMessage("Something Went Wrong! Please try again later");
+    } on Failure catch (f) {
+      print(f.message);
+      setErrorMessage(f.message);
       setState(ViewState.Error);
     }
   }

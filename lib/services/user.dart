@@ -1,13 +1,16 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:cv_projects_task/globals.dart';
+import 'package:cv_projects_task/models/failure_model.dart';
 import 'package:cv_projects_task/models/login_response.dart';
 import 'package:cv_projects_task/models/user_response.dart';
+import 'package:cv_projects_task/utils/api_utils.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserApi {
-  var header = {"Content-Type": "application/json"};
+  var headers = {"Content-Type": "application/json"};
   http.Client client = new http.Client();
 
   Future<LoginResponse> userLogin(String email, String pass,
@@ -22,19 +25,20 @@ class UserApi {
       http.Client apiClient = httpClient == null ? client : httpClient;
       var response = await apiClient.post(
         uri,
-        headers: header,
+        headers: headers,
         body: jsonEncode(json),
       );
-      final jsonResponse = jsonDecode(response.body);
+      final jsonResponse = ApiUtils.jsonResponse(response);
       LoginResponse loginResponse = new LoginResponse.fromJson(jsonResponse);
-      print(response.body);
-      if (response.statusCode == 202) {
-        return loginResponse;
-      }
-      return null;
-    } on Exception catch (e) {
-      print(e);
-      throw Exception(e);
+      return loginResponse;
+    } on SocketException {
+      throw Failure("No Internet Connection");
+    } on HttpException {
+      throw Failure("Couldn't find the User");
+    } on FormatException {
+      throw Failure("Bad Response Format");
+    } on Exception {
+      throw Failure("Something Wrong Occured! Please try again.");
     }
   }
 
@@ -44,19 +48,23 @@ class UserApi {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String token = prefs.getString("token");
-      header.addAll({"Authorization": "Token $token"});
+      headers.addAll({"Authorization": "Token $token"});
       http.Client apiClient = httpClient == null ? client : httpClient;
       var response = await apiClient.get(
         uri,
-        headers: header,
+        headers: headers,
       );
-      final jsonResponse = jsonDecode(response.body);
+      final jsonResponse = ApiUtils.jsonResponse(response);
       UserResponse userResponse = new UserResponse.fromJson(jsonResponse);
-      print(response.body);
       return userResponse;
-    } on Exception catch (e) {
-      print(e);
-      throw Exception(e);
+    } on SocketException {
+      throw Failure("No Internet Connection");
+    } on HttpException {
+      throw Failure("Couldn't fetch the User");
+    } on FormatException {
+      throw Failure("Bad Response Format");
+    } on Exception {
+      throw Failure("Something Wrong Occured! Please try again.");
     }
   }
 
@@ -77,23 +85,24 @@ class UserApi {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String token = prefs.getString("token");
-      header.addAll({"Authorization": "Token $token"});
+      headers.addAll({"Authorization": "Token $token"});
       http.Client apiClient = httpClient == null ? client : httpClient;
       var response = await apiClient.patch(
         uri,
-        headers: header,
+        headers: headers,
         body: jsonEncode(json),
       );
-      final jsonResponse = jsonDecode(response.body);
+      final jsonResponse = ApiUtils.jsonResponse(response);
       UserResponse userResponse = new UserResponse.fromJson(jsonResponse);
-      print(response.body);
-      if (response.statusCode == 202) {
-        return userResponse;
-      }
-      return null;
-    } on Exception catch (e) {
-      print(e);
-      throw Exception(e);
+      return userResponse;
+    } on SocketException {
+      throw Failure("No Internet Connection");
+    } on HttpException {
+      throw Failure("Couldn't update the User");
+    } on FormatException {
+      throw Failure("Bad Response Format");
+    } on Exception {
+      throw Failure("Something Wrong Occured! Please try again.");
     }
   }
 }

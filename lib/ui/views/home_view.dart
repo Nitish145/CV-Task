@@ -229,7 +229,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: homePageScaffoldKey,
+      key: homeViewScaffoldKey,
       appBar: getAppBar(),
       drawer: _drawer(context),
       body: Container(

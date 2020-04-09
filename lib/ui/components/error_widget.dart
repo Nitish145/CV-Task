@@ -14,6 +14,7 @@ class CVErrorWidget extends StatelessWidget {
         child: Center(
           child: Text(
             errorMessage ?? "Something Went Wrong! Please try again later",
+            textAlign: TextAlign.center,
           ),
         ),
       ),

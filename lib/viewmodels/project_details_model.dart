@@ -1,5 +1,6 @@
 import 'package:cv_projects_task/enums/view_state.dart';
 import 'package:cv_projects_task/locator.dart';
+import 'package:cv_projects_task/models/failure_model.dart';
 import 'package:cv_projects_task/models/project_model_response.dart';
 import 'package:cv_projects_task/services/projects.dart';
 import 'package:cv_projects_task/viewmodels/base_model.dart';
@@ -12,20 +13,21 @@ class ProjectDetailsModel extends BaseModel {
 
   ProjectModelResponse get projectDetails => _projectDetails;
 
-  set setProjectDetails(ProjectModelResponse projectDetails) {
+  set projectDetails(ProjectModelResponse projectDetails) {
     _projectDetails = projectDetails;
+    notifyListeners();
   }
 
   Future getProjectDetails(int id, {http.Client client}) async {
     setState(ViewState.Busy);
     try {
-      _projectDetails =
+      projectDetails =
           await _projectsApi.getProjectDetails(id, httpClient: client);
       setState(ViewState.Idle);
-    } on Exception catch (e) {
-      print(e);
+    } on Failure catch (f) {
+      print(f.message);
+      setErrorMessage(f.message);
       setState(ViewState.Error);
-      setErrorMessage("Something Went Wrong! Please try again later");
     }
   }
 }

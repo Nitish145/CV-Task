@@ -1,4 +1,5 @@
 import 'package:cv_projects_task/enums/view_state.dart';
+import 'package:cv_projects_task/globals.dart';
 import 'package:cv_projects_task/models/user_response.dart' as User;
 import 'package:cv_projects_task/ui/components/error_widget.dart';
 import 'package:cv_projects_task/ui/components/loading_indicator.dart';
@@ -74,6 +75,7 @@ class _ProfileViewState extends State<ProfileView> {
     return BaseView<ProfileModel>(
       onModelReady: (model) => model.getUserProfile(client: widget.client),
       builder: (context, model, child) => Scaffold(
+        key: profileViewScaffoldKey,
         appBar: AppBar(
           title: Text(
             "Your Profile",
@@ -87,7 +89,9 @@ class _ProfileViewState extends State<ProfileView> {
         body: model.state == ViewState.Busy
             ? LoadingIndicator()
             : model.state == ViewState.Error
-                ? CVErrorWidget(errorMessage: model.errorMessage)
+                ? CVErrorWidget(
+                    errorMessage: model.errorMessage,
+                  )
                 : Builder(
                     builder: (context) {
                       User.Attributes attributes =

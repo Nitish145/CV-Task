@@ -1,4 +1,5 @@
 import 'package:cv_projects_task/enums/view_state.dart';
+import 'package:cv_projects_task/globals.dart';
 import 'package:cv_projects_task/ui/views/base_view.dart';
 import 'package:cv_projects_task/viewmodels/login_model.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,6 @@ class _LoginViewState extends State<LoginView> {
   final _formKey = new GlobalKey<FormState>();
   String _email, _password;
   bool _obscureText = true;
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   // Toggles the password show status
   void _toggle() {
@@ -139,9 +139,8 @@ class _LoginViewState extends State<LoginView> {
   }
 
   void resetLogin(LoginModel model) {
-    model.isLoginSuccessful = false;
     _formKey.currentState.reset();
-    _showSnackBar(model.errorMessage);
+    showSnackBar(loginViewScaffoldKey, model.errorMessage);
   }
 
   void _validateAndSubmit(LoginModel model) {
@@ -149,14 +148,14 @@ class _LoginViewState extends State<LoginView> {
       FocusScope.of(context).requestFocus(new FocusNode());
       model
           .login(email: _email, password: _password, client: widget.client)
-          .then((isLoginSuccessful) {
-        if (isLoginSuccessful) {
-          _showSnackBar("Login Successful");
+          .then((_) {
+        if (model.isLoginSuccessful) {
+          showSnackBar(loginViewScaffoldKey, "Login Successful");
           Future.delayed(Duration(seconds: 1), () {
             Navigator.pop(context);
           });
         } else {
-          _showSnackBar(model.errorMessage);
+          resetLogin(model);
         }
       }).catchError((e) {
         resetLogin(model);
@@ -164,17 +163,11 @@ class _LoginViewState extends State<LoginView> {
     }
   }
 
-  void _showSnackBar(String message) {
-    _scaffoldKey.currentState.showSnackBar(SnackBar(
-      content: Text(message),
-    ));
-  }
-
   @override
   Widget build(BuildContext context) {
     return BaseView<LoginModel>(
       builder: (context, model, child) => Scaffold(
-        key: _scaffoldKey,
+        key: loginViewScaffoldKey,
         appBar: AppBar(
           title: Text("LogIn / SignUp"),
         ),

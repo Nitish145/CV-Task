@@ -1,4 +1,5 @@
 import 'package:cv_projects_task/enums/view_state.dart';
+import 'package:cv_projects_task/globals.dart';
 import 'package:cv_projects_task/models/projects_response.dart' as Projects;
 import 'package:cv_projects_task/ui/components/error_widget.dart';
 import 'package:cv_projects_task/ui/components/loading_indicator.dart';
@@ -41,11 +42,8 @@ class _PublicProjectsViewState extends State<PublicProjectsView> {
                 model.publicProjects.data.forEach((data) {
                   dataList.add(data);
                 });
-                model.isNextPageLoading = true;
               }).catchError((e) {
-                model.setState(ViewState.Error);
-                model.setErrorMessage("Something Went Wrong! Please try again later");
-                model.isNextPageLoading = false;
+                showSnackBar(publicProjectsViewScaffoldKey, model.errorMessage);
               });
             }
           }
@@ -54,12 +52,12 @@ class _PublicProjectsViewState extends State<PublicProjectsView> {
           model.publicProjects.data.forEach((data) {
             dataList.add(data);
           });
-          model.setState(ViewState.Idle);
         }).catchError((e) {
-          model.setState(ViewState.Error);
+          showSnackBar(publicProjectsViewScaffoldKey, model.errorMessage);
         });
       },
       builder: (context, model, child) => Scaffold(
+        key: publicProjectsViewScaffoldKey,
         appBar: AppBar(
           title: Text("Public Projects"),
         ),
@@ -83,7 +81,9 @@ class _PublicProjectsViewState extends State<PublicProjectsView> {
                       );
                     },
                   )
-            : CVErrorWidget(),
+            : CVErrorWidget(
+                errorMessage: model.errorMessage,
+              ),
       ),
     );
   }
