@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:cv_projects_task/globals.dart';
 import 'package:cv_projects_task/models/failure_model.dart';
@@ -8,6 +7,7 @@ import 'package:cv_projects_task/models/user_response.dart';
 import 'package:cv_projects_task/utils/api_utils.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cv_projects_task/utils/app_exceptions.dart';
 
 class UserApi {
   var headers = {"Content-Type": "application/json"};
@@ -23,18 +23,18 @@ class UserApi {
     };
     try {
       http.Client apiClient = httpClient == null ? client : httpClient;
-      var response = await apiClient.post(
+      var jsonResponse = await ApiUtils.post(
         uri,
+        client: apiClient,
         headers: headers,
         body: jsonEncode(json),
       );
-      final jsonResponse = ApiUtils.jsonResponse(response);
       LoginResponse loginResponse = new LoginResponse.fromJson(jsonResponse);
       return loginResponse;
-    } on SocketException {
-      throw Failure("No Internet Connection");
-    } on HttpException {
-      throw Failure("Couldn't find the User");
+    } on UnauthorizedException {
+      throw Failure("Invalid Credentials, Please check.");
+    } on NotFoundException {
+      throw Failure("User Not found, try Signing Up.");
     } on FormatException {
       throw Failure("Bad Response Format");
     } on Exception {
@@ -50,17 +50,17 @@ class UserApi {
       String token = prefs.getString("token");
       headers.addAll({"Authorization": "Token $token"});
       http.Client apiClient = httpClient == null ? client : httpClient;
-      var response = await apiClient.get(
+      var jsonResponse = await ApiUtils.get(
         uri,
+        client: apiClient,
         headers: headers,
       );
-      final jsonResponse = ApiUtils.jsonResponse(response);
       UserResponse userResponse = new UserResponse.fromJson(jsonResponse);
       return userResponse;
-    } on SocketException {
-      throw Failure("No Internet Connection");
-    } on HttpException {
-      throw Failure("Couldn't fetch the User");
+    } on UnauthorizedException {
+      throw Failure("You are not authorized to fetch this User");
+    } on NotFoundException {
+      throw Failure("No User Found");
     } on FormatException {
       throw Failure("Bad Response Format");
     } on Exception {
@@ -87,18 +87,14 @@ class UserApi {
       String token = prefs.getString("token");
       headers.addAll({"Authorization": "Token $token"});
       http.Client apiClient = httpClient == null ? client : httpClient;
-      var response = await apiClient.patch(
+      var jsonResponse = await ApiUtils.patch(
         uri,
+        client: apiClient,
         headers: headers,
         body: jsonEncode(json),
       );
-      final jsonResponse = ApiUtils.jsonResponse(response);
       UserResponse userResponse = new UserResponse.fromJson(jsonResponse);
       return userResponse;
-    } on SocketException {
-      throw Failure("No Internet Connection");
-    } on HttpException {
-      throw Failure("Couldn't update the User");
     } on FormatException {
       throw Failure("Bad Response Format");
     } on Exception {

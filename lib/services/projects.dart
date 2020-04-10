@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:cv_projects_task/globals.dart';
 import 'package:cv_projects_task/models/failure_model.dart';
 import 'package:cv_projects_task/models/project_model_response.dart'
@@ -20,18 +17,14 @@ class ProjectsApi {
     String uri = url + endpoint;
     try {
       http.Client apiClient = httpClient == null ? client : httpClient;
-      var response = await apiClient.get(
+      var jsonResponse = await ApiUtils.get(
         uri,
+        client: apiClient,
         headers: headers,
       );
-      final jsonResponse = ApiUtils.jsonResponse(response);
       Projects.ProjectsResponse projectsResponse =
           new Projects.ProjectsResponse.fromJson(jsonResponse);
       return projectsResponse;
-    } on SocketException {
-      throw Failure("No Internet Connection");
-    } on HttpException {
-      throw Failure("Couldn't fetch Public Projects");
     } on FormatException {
       throw Failure("Bad Response Format");
     } on Exception {
@@ -48,18 +41,14 @@ class ProjectsApi {
       String token = prefs.getString("token");
       headers.addAll({"Authorization": "Token $token"});
       http.Client apiClient = httpClient == null ? client : httpClient;
-      var response = await apiClient.get(
+      var jsonResponse = await ApiUtils.get(
         uri,
+        client: apiClient,
         headers: headers,
       );
-      final jsonResponse = jsonDecode(response.body);
       Projects.ProjectsResponse projectsResponse =
           new Projects.ProjectsResponse.fromJson(jsonResponse);
       return projectsResponse;
-    } on SocketException {
-      throw Failure("No Internet Connection");
-    } on HttpException {
-      throw Failure("Couldn't fetch your Projects");
     } on FormatException {
       throw Failure("Bad Response Format");
     } on Exception {
@@ -73,18 +62,14 @@ class ProjectsApi {
     String uri = url + endpoint;
     try {
       http.Client apiClient = httpClient == null ? client : httpClient;
-      var response = await apiClient.get(
+      var jsonResponse = await ApiUtils.get(
         uri,
+        client: apiClient,
         headers: headers,
       );
-      final jsonResponse = ApiUtils.jsonResponse(response);
       ProjectModel.ProjectModelResponse projectModelResponse =
           new ProjectModel.ProjectModelResponse.fromJson(jsonResponse);
       return projectModelResponse;
-    } on SocketException {
-      throw Failure("No Internet Connection");
-    } on HttpException {
-      throw Failure("Couldn't fetch Project Details");
     } on FormatException {
       throw Failure("Bad Response Format");
     } on Exception {

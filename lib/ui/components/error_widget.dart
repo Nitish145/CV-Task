@@ -13,7 +13,7 @@ class CVErrorWidget extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Center(
           child: Text(
-            errorMessage ?? "Something Went Wrong! Please try again later",
+            errorMessage ?? "Something Wrong Occured! Please try again.",
             textAlign: TextAlign.center,
           ),
         ),

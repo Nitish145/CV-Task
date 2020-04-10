@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-String url = "https://2890791b.ngrok.io";
+String url = "http://dafed677.ngrok.io";
 
 Map<int, Color> color = {
   50: Color.fromRGBO(66, 185, 131, .1),
