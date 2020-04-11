@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-String url = "http://fedd0ad5.ngrok.io";
+String url = "http://812b1a77.ngrok.io";
 
 Map<int, Color> color = {
   50: Color.fromRGBO(66, 185, 131, .1),
@@ -24,4 +24,24 @@ launchURL(String url) async {
   }
 }
 
-GlobalKey<ScaffoldState> homePageScaffoldKey = new GlobalKey<ScaffoldState>();
+// Global Scaffold Keys
+
+final GlobalKey<ScaffoldState> homeViewScaffoldKey =
+    new GlobalKey<ScaffoldState>();
+final GlobalKey<ScaffoldState> loginViewScaffoldKey =
+    new GlobalKey<ScaffoldState>();
+final GlobalKey<ScaffoldState> publicProjectsViewScaffoldKey =
+    new GlobalKey<ScaffoldState>();
+final GlobalKey<ScaffoldState> myProjectsViewScaffoldKey =
+    new GlobalKey<ScaffoldState>();
+final GlobalKey<ScaffoldState> profileViewScaffoldKey =
+    new GlobalKey<ScaffoldState>();
+final GlobalKey<ScaffoldState> projectDetailsViewScaffoldKey =
+    new GlobalKey<ScaffoldState>();
+
+// global function to show snackbar
+void showSnackBar(GlobalKey<ScaffoldState> _scaffoldKey, String _message) {
+  _scaffoldKey.currentState.showSnackBar(SnackBar(
+    content: Text(_message),
+  ));
+}

@@ -1,8 +1,13 @@
 import 'package:cv_projects_task/globals.dart';
-import 'package:cv_projects_task/home_page.dart';
+import 'package:cv_projects_task/locator.dart';
+import 'package:cv_projects_task/ui/router.dart';
+import 'package:cv_projects_task/ui/views/home_view.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  setupLocator();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -19,10 +24,12 @@ class MyApp extends StatelessWidget {
         cursorColor: Color.fromRGBO(66, 185, 131, 1),
         fontFamily: 'Raleway',
       ),
+      onGenerateRoute: Router.generateRoute,
+      initialRoute: Router.initialRoute,
       home: Container(
         color: Color.fromRGBO(66, 185, 131, 1),
         child: SafeArea(
-          child: HomePage(),
+          child: HomeView(),
         ),
       ),
     );

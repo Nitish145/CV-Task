@@ -31,6 +31,9 @@ dependencies:
   flutter_icons:
   fluttertoast:
   animations:
+  get_it:
+  provider:
+  cached_network_image: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -49,7 +52,6 @@ flutter_icons:
 
 # The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
