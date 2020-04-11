@@ -94,8 +94,11 @@ class _ProjectDetailViewState extends State<ProjectDetailView> {
   @override
   Widget build(BuildContext context) {
     return BaseView<ProjectDetailsModel>(
-      onModelReady: (model) =>
-          model.getProjectDetails(widget.id, client: widget.client),
+      onModelReady: (model) => model
+          .getProjectDetails(widget.id, client: widget.client)
+          .catchError((e) {
+        showSnackBar(projectDetailsViewScaffoldKey, model.errorMessage);
+      }),
       builder: (context, model, child) => Scaffold(
         key: projectDetailsViewScaffoldKey,
         appBar: AppBar(
@@ -124,6 +127,7 @@ class _ProjectDetailViewState extends State<ProjectDetailView> {
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
                             Container(
+                              height: 250,
                               child: FadeInImage.memoryNetwork(
                                 width: MediaQuery.of(context).size.width,
                                 placeholder: kTransparentImage,

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cv_projects_task/constants.dart';
 import 'package:cv_projects_task/globals.dart';
 import 'package:cv_projects_task/models/failure_model.dart';
 import 'package:cv_projects_task/models/login_response.dart';
@@ -32,13 +33,13 @@ class UserApi {
       LoginResponse loginResponse = new LoginResponse.fromJson(jsonResponse);
       return loginResponse;
     } on UnauthorizedException {
-      throw Failure("Invalid Credentials, Please check.");
+      throw Failure(Constants.USER_AUTH_INCORRECT_PASSWORD);
     } on NotFoundException {
-      throw Failure("User Not found, try Signing Up.");
+      throw Failure(Constants.USER_AUTH_USER_NOT_FOUND);
     } on FormatException {
-      throw Failure("Bad Response Format");
+      throw Failure(Constants.BAD_RESPONSE_FORMAT);
     } on Exception {
-      throw Failure("Something Wrong Occured! Please try again.");
+      throw Failure(Constants.GENERIC_FAILURE);
     }
   }
 
@@ -58,13 +59,13 @@ class UserApi {
       UserResponse userResponse = new UserResponse.fromJson(jsonResponse);
       return userResponse;
     } on UnauthorizedException {
-      throw Failure("You are not authorized to fetch this User");
+      throw Failure(Constants.USER_NOT_AUTHORIZED_TO_FETCH_USER);
     } on NotFoundException {
-      throw Failure("No User Found");
+      throw Failure(Constants.USER_NOT_FOUND);
     } on FormatException {
-      throw Failure("Bad Response Format");
+      throw Failure(Constants.BAD_RESPONSE_FORMAT);
     } on Exception {
-      throw Failure("Something Wrong Occured! Please try again.");
+      throw Failure(Constants.GENERIC_FAILURE);
     }
   }
 
@@ -96,9 +97,9 @@ class UserApi {
       UserResponse userResponse = new UserResponse.fromJson(jsonResponse);
       return userResponse;
     } on FormatException {
-      throw Failure("Bad Response Format");
+      throw Failure(Constants.BAD_RESPONSE_FORMAT);
     } on Exception {
-      throw Failure("Something Wrong Occured! Please try again.");
+      throw Failure(Constants.GENERIC_FAILURE);
     }
   }
 }

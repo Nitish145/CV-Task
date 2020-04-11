@@ -1,3 +1,4 @@
+import 'package:cv_projects_task/constants.dart';
 import 'package:cv_projects_task/globals.dart';
 import 'package:cv_projects_task/models/failure_model.dart';
 import 'package:cv_projects_task/models/project_model_response.dart'
@@ -26,9 +27,9 @@ class ProjectsApi {
           new Projects.ProjectsResponse.fromJson(jsonResponse);
       return projectsResponse;
     } on FormatException {
-      throw Failure("Bad Response Format");
+      throw Failure(Constants.BAD_RESPONSE_FORMAT);
     } on Exception {
-      throw Failure("Something Wrong Occured! Please try again.");
+      throw Failure(Constants.GENERIC_FAILURE);
     }
   }
 
@@ -50,9 +51,9 @@ class ProjectsApi {
           new Projects.ProjectsResponse.fromJson(jsonResponse);
       return projectsResponse;
     } on FormatException {
-      throw Failure("Bad Response Format");
+      throw Failure(Constants.BAD_RESPONSE_FORMAT);
     } on Exception {
-      throw Failure("Something Wrong Occured! Please try again.");
+      throw Failure(Constants.GENERIC_FAILURE);
     }
   }
 
@@ -71,9 +72,9 @@ class ProjectsApi {
           new ProjectModel.ProjectModelResponse.fromJson(jsonResponse);
       return projectModelResponse;
     } on FormatException {
-      throw Failure("Bad Response Format");
+      throw Failure(Constants.BAD_RESPONSE_FORMAT);
     } on Exception {
-      throw Failure("Something Wrong Occured! Please try again.");
+      throw Failure(Constants.GENERIC_FAILURE);
     }
   }
 }

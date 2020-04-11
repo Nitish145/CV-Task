@@ -27,17 +27,20 @@ class MyProjectsModel extends BaseModel {
     notifyListeners();
   }
 
-  Future getMyProjects(int page, {http.Client client}) async {
+  Future<ProjectsResponse> getMyProjects(int page, {http.Client client}) async {
     setState(ViewState.Busy);
     try {
       if (page > 1) isNextPageLoading = true;
       myProjects = await _projectsApi.getMyProjects(page, httpClient: client);
       isNextPageLoading = false;
       setState(ViewState.Idle);
+      return myProjects;
     } on Failure catch (f) {
+      isNextPageLoading = false;
       print(f.message);
       setErrorMessage(f.message);
       setState(ViewState.Error);
     }
+    return null;
   }
 }

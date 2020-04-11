@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cv_projects_task/constants.dart';
 import 'package:cv_projects_task/models/failure_model.dart';
 import 'package:cv_projects_task/utils/app_exceptions.dart';
 import 'package:http/http.dart' as http;
@@ -14,9 +15,9 @@ class ApiUtils {
       final jsonResponse = ApiUtils.jsonResponse(response);
       return jsonResponse;
     } on SocketException {
-      throw Failure("No Internet Connection");
+      throw Failure(Constants.NO_INTERNET_CONNECTION);
     } on HttpException {
-      throw Failure("Unable to fetch response");
+      throw Failure(Constants.HTTP_EXCEPTION);
     }
   }
 
@@ -28,9 +29,9 @@ class ApiUtils {
       final jsonResponse = ApiUtils.jsonResponse(response);
       return jsonResponse;
     } on SocketException {
-      throw Failure("No Internet Connection");
+      throw Failure(Constants.NO_INTERNET_CONNECTION);
     } on HttpException {
-      throw Failure("Unable to fetch response");
+      throw Failure(Constants.HTTP_EXCEPTION);
     }
   }
 
@@ -42,9 +43,9 @@ class ApiUtils {
       final jsonResponse = ApiUtils.jsonResponse(response);
       return jsonResponse;
     } on SocketException {
-      throw Failure("No Internet Connection");
+      throw Failure(Constants.NO_INTERNET_CONNECTION);
     } on HttpException {
-      throw Failure("Unable to fetch response");
+      throw Failure(Constants.HTTP_EXCEPTION);
     }
   }
 
@@ -56,9 +57,9 @@ class ApiUtils {
       final jsonResponse = ApiUtils.jsonResponse(response);
       return jsonResponse;
     } on SocketException {
-      throw Failure("No Internet Connection");
+      throw Failure(Constants.NO_INTERNET_CONNECTION);
     } on HttpException {
-      throw Failure("Unable to fetch response");
+      throw Failure(Constants.HTTP_EXCEPTION);
     }
   }
 
@@ -70,9 +71,9 @@ class ApiUtils {
       final jsonResponse = ApiUtils.jsonResponse(response);
       return jsonResponse;
     } on SocketException {
-      throw Failure("No Internet Connection");
+      throw Failure(Constants.NO_INTERNET_CONNECTION);
     } on HttpException {
-      throw Failure("Unable to fetch response");
+      throw Failure(Constants.HTTP_EXCEPTION);
     }
   }
 

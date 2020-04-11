@@ -27,7 +27,8 @@ class PublicProjectsModel extends BaseModel {
     notifyListeners();
   }
 
-  Future getPublicProjects(int page, {http.Client client}) async {
+  Future<ProjectsResponse> getPublicProjects(int page,
+      {http.Client client}) async {
     setState(ViewState.Busy);
     try {
       if (page > 1) isNextPageLoading = true;
@@ -35,10 +36,13 @@ class PublicProjectsModel extends BaseModel {
           await _projectsApi.getPublicProjects(page, httpClient: client);
       isNextPageLoading = false;
       setState(ViewState.Idle);
+      return publicProjects;
     } on Failure catch (f) {
+      isNextPageLoading = false;
       print(f.message);
       setErrorMessage(f.message);
       setState(ViewState.Error);
     }
+    return null;
   }
 }

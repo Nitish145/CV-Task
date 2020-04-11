@@ -33,19 +33,13 @@ class LoginModel extends BaseModel {
     try {
       loginResponse =
           await _userApi.userLogin(email, password, httpClient: client);
-      if (_loginResponse.toJson().containsKey("token")) {
-        SharedPreferences preferences = await SharedPreferences.getInstance();
-        preferences.setBool("isLoggedIn", true);
-        preferences.setString("token", _loginResponse.token);
-        preferences.setString("currentUserName", _loginResponse.username);
-        print("TOKEN SAVED");
-        _isLoginSuccessful = true;
-        setState(ViewState.Idle);
-      } else {
-        isLoginSuccessful = false;
-        setErrorMessage("Authentication details were not correct");
-        setState(ViewState.Error);
-      }
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      preferences.setBool("isLoggedIn", true);
+      preferences.setString("token", _loginResponse.token);
+      preferences.setString("currentUserName", _loginResponse.username);
+      print("TOKEN SAVED");
+      _isLoginSuccessful = true;
+      setState(ViewState.Idle);
     } on Failure catch (f) {
       print(f.message);
       isLoginSuccessful = false;

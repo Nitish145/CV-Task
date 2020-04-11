@@ -157,8 +157,6 @@ class _LoginViewState extends State<LoginView> {
         } else {
           resetLogin(model);
         }
-      }).catchError((e) {
-        resetLogin(model);
       });
     }
   }

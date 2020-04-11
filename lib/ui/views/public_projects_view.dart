@@ -31,6 +31,16 @@ class _PublicProjectsViewState extends State<PublicProjectsView> {
   Widget build(BuildContext context) {
     return BaseView<PublicProjectsModel>(
       onModelReady: (model) {
+        model
+            .getPublicProjects(1, client: widget.client)
+            .then((publicProjects) {
+          if (publicProjects != null)
+            publicProjects.data.forEach((data) {
+              dataList.add(data);
+            });
+          if (model.state == ViewState.Error)
+            showSnackBar(publicProjectsViewScaffoldKey, model.errorMessage);
+        });
         _scrollController.addListener(() {
           if (_scrollController.position.pixels ==
               _scrollController.position.maxScrollExtent) {
@@ -38,22 +48,17 @@ class _PublicProjectsViewState extends State<PublicProjectsView> {
               model
                   .getPublicProjects(model.publicProjects.meta.nextPage,
                       client: widget.client)
-                  .then((_) {
-                model.publicProjects.data.forEach((data) {
-                  dataList.add(data);
-                });
-              }).catchError((e) {
-                showSnackBar(publicProjectsViewScaffoldKey, model.errorMessage);
+                  .then((publicProjects) {
+                if (publicProjects != null)
+                  publicProjects.data.forEach((data) {
+                    dataList.add(data);
+                  });
+                if (model.state == ViewState.Error)
+                  showSnackBar(
+                      publicProjectsViewScaffoldKey, model.errorMessage);
               });
             }
           }
-        });
-        model.getPublicProjects(1, client: widget.client).then((_) {
-          model.publicProjects.data.forEach((data) {
-            dataList.add(data);
-          });
-        }).catchError((e) {
-          showSnackBar(publicProjectsViewScaffoldKey, model.errorMessage);
         });
       },
       builder: (context, model, child) => Scaffold(
@@ -61,29 +66,40 @@ class _PublicProjectsViewState extends State<PublicProjectsView> {
         appBar: AppBar(
           title: Text("Public Projects"),
         ),
-        body: !(model.state == ViewState.Error)
-            ? model.state == ViewState.Busy && !model.isNextPageLoading
+        body: (model.state == ViewState.Error) && dataList.isEmpty
+            ? CVErrorWidget(
+                errorMessage: model.errorMessage,
+              )
+            : model.state == ViewState.Busy && dataList.isEmpty
                 ? LoadingIndicator()
                 : ListView.builder(
                     controller: _scrollController,
-                    itemCount: dataList.length,
+                    itemCount: model.publicProjects.meta.nextPage != null &&
+                            model.state != ViewState.Error
+                        ? dataList.length + 1
+                        : dataList.length,
                     itemBuilder: (context, index) {
-                      Projects.Datum datum = dataList[index];
-                      Projects.DatumAttributes datumAttributes =
-                          datum.attributes;
-                      return ProjectCard(
-                        id: int.parse(datum.id),
-                        name: datumAttributes.name,
-                        projectAccessType: datumAttributes.projectAccessType,
-                        createdAt: datumAttributes.createdAt,
-                        updatedAt: datumAttributes.updatedAt,
-                        imageUrl: datumAttributes.imagePreview.url,
-                      );
+                      if (index == dataList.length &&
+                          model.state != ViewState.Error) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: Center(child: CircularProgressIndicator()),
+                        );
+                      } else {
+                        Projects.Datum datum = dataList[index];
+                        Projects.DatumAttributes datumAttributes =
+                            datum.attributes;
+                        return ProjectCard(
+                          id: int.parse(datum.id),
+                          name: datumAttributes.name,
+                          projectAccessType: datumAttributes.projectAccessType,
+                          createdAt: datumAttributes.createdAt,
+                          updatedAt: datumAttributes.updatedAt,
+                          imageUrl: datumAttributes.imagePreview.url,
+                        );
+                      }
                     },
-                  )
-            : CVErrorWidget(
-                errorMessage: model.errorMessage,
-              ),
+                  ),
       ),
     );
   }
