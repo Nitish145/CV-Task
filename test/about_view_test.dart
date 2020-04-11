@@ -1,20 +1,20 @@
-import 'package:cv_projects_task/about_page.dart';
-import 'package:cv_projects_task/components/contribute_card_social.dart';
-import 'package:cv_projects_task/components/team_card.dart';
+import 'package:cv_projects_task/ui/components/contribute_card_social.dart';
+import 'package:cv_projects_task/ui/components/team_card.dart';
+import 'package:cv_projects_task/ui/views/about_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  Future<void> pumpAboutPage(WidgetTester tester) async {
+  Future<void> pumpAboutView(WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: AboutPage(),
+        home: AboutView(),
       ),
     );
   }
 
-  testWidgets("About Page Widgets", (WidgetTester tester) async {
-    await pumpAboutPage(tester);
+  testWidgets("About View Widgets", (WidgetTester tester) async {
+    await pumpAboutView(tester);
 
     expect(find.text("ABOUT"), findsOneWidget);
     expect(find.byType(RaisedButton), findsNWidgets(2));

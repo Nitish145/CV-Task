@@ -1,14 +1,16 @@
-import 'package:cv_projects_task/about_page.dart';
-import 'package:cv_projects_task/components/feature_card.dart';
-import 'package:cv_projects_task/contributors_page.dart';
 import 'package:cv_projects_task/globals.dart';
-import 'package:cv_projects_task/home_page.dart';
 import 'package:cv_projects_task/keys.dart';
-import 'package:cv_projects_task/login_page.dart';
-import 'package:cv_projects_task/my_projects_page.dart';
-import 'package:cv_projects_task/profile_page.dart';
-import 'package:cv_projects_task/public_projects_page.dart';
-import 'package:cv_projects_task/teachers_page.dart';
+import 'package:cv_projects_task/locator.dart';
+import 'package:cv_projects_task/ui/components/feature_card.dart';
+import 'package:cv_projects_task/ui/router.dart';
+import 'package:cv_projects_task/ui/views/about_view.dart';
+import 'package:cv_projects_task/ui/views/contributors_view.dart';
+import 'package:cv_projects_task/ui/views/home_view.dart';
+import 'package:cv_projects_task/ui/views/login_view.dart';
+import 'package:cv_projects_task/ui/views/my_projects_view.dart';
+import 'package:cv_projects_task/ui/views/profile_view.dart';
+import 'package:cv_projects_task/ui/views/public_projects_view.dart';
+import 'package:cv_projects_task/ui/views/teachers_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -19,14 +21,20 @@ import 'mocks.dart';
 void main() {
   NavigatorObserver mockObserver;
 
+  setUpAll(() {
+    setupLocator();
+  });
+
   setUp(() {
     mockObserver = MockNavigatorObserver();
   });
 
-  Future<void> pumpHomePage(WidgetTester tester) async {
+  Future<void> pumpHomeView(WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: HomePage(),
+        onGenerateRoute: Router.generateRoute,
+        initialRoute: Router.initialRoute,
+        home: HomeView(),
         navigatorObservers: [mockObserver],
       ),
     );
@@ -36,8 +44,8 @@ void main() {
     verify(mockObserver.didPush(any, any));
   }
 
-  testWidgets("Home Page Widgets", (WidgetTester tester) async {
-    await pumpHomePage(tester);
+  testWidgets("Home View Widgets", (WidgetTester tester) async {
+    await pumpHomeView(tester);
 
     expect(find.text("Dive into the world of Logic Circuits for free!"),
         findsOneWidget);
@@ -46,8 +54,8 @@ void main() {
   });
 
   Future<Null> _openHomePageDrawer(WidgetTester tester) async {
-    await pumpHomePage(tester);
-    homePageScaffoldKey.currentState.openDrawer();
+    await pumpHomeView(tester);
+    homeViewScaffoldKey.currentState.openDrawer();
     await tester.pumpAndSettle();
   }
 
@@ -64,50 +72,50 @@ void main() {
   }
 
   group('HomePage Drawer navigation tests', () {
-    testWidgets('when tapping "About" in drawer, should navigate to About page',
+    testWidgets('when tapping "About" in drawer, should navigate to About View',
         (WidgetTester tester) async {
       await _openHomePageDrawer(tester);
       await tester.tap(find.byKey(Key(Keys.aboutDrawerTile)));
       await tester.pumpAndSettle();
 
       verify(mockObserver.didPush(any, any));
-      expect(find.byType(AboutPage), findsOneWidget);
+      expect(find.byType(AboutView), findsOneWidget);
     });
 
     testWidgets(
-        'when tapping "Contribute" in drawer, should navigate to Contributors page',
+        'when tapping "Contribute" in drawer, should navigate to Contributors View',
         (WidgetTester tester) async {
       await _openHomePageDrawer(tester);
       await tester.tap(find.byKey(Key(Keys.contributeDrawerTile)));
       await tester.pumpAndSettle();
 
       verify(mockObserver.didPush(any, any));
-      expect(find.byType(ContributorsPage), findsOneWidget);
+      expect(find.byType(ContributorsView), findsOneWidget);
     });
 
     testWidgets(
-        'when tapping "Teachers" in drawer, should navigate to Teachers page',
+        'when tapping "Teachers" in drawer, should navigate to Teachers View',
         (WidgetTester tester) async {
       await _openHomePageDrawer(tester);
       await tester.tap(find.byKey(Key(Keys.teachersDrawerTile)));
       await tester.pumpAndSettle();
 
       verify(mockObserver.didPush(any, any));
-      expect(find.byType(TeachersPage), findsOneWidget);
+      expect(find.byType(TeachersView), findsOneWidget);
     });
 
     testWidgets(
-        'when tapping "Public Projects" in drawer, should navigate to Public Projects page',
+        'when tapping "Public Projects" in drawer, should navigate to Public Projects View',
         (WidgetTester tester) async {
       await _openHomePageDrawer(tester);
       await tester.tap(find.byKey(Key(Keys.publicProjectsDrawerTile)));
       await tester.pumpAndSettle();
 
       verify(mockObserver.didPush(any, any));
-      expect(find.byType(PublicProjectsPage), findsOneWidget);
+      expect(find.byType(PublicProjectsView), findsOneWidget);
     });
 
-    testWidgets('when tapping "Login" in drawer, should navigate to Login page',
+    testWidgets('when tapping "Login" in drawer, should navigate to Login View',
         (WidgetTester tester) async {
       SharedPreferences.setMockInitialValues({"isLoggedIn": false});
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -118,29 +126,29 @@ void main() {
       await tester.pumpAndSettle();
 
       verify(mockObserver.didPush(any, any));
-      expect(find.byType(LoginPage), findsOneWidget);
+      expect(find.byType(LoginView), findsOneWidget);
     });
 
     testWidgets(
-        'when tapping "Profile" in expansion tile, should navigate to Profile page',
+        'when tapping "Profile" in expansion tile, should navigate to Profile View',
         (WidgetTester tester) async {
       await _openDrawerExpansionTile(tester);
       await tester.tap(find.byKey(Key(Keys.profileDrawerTile)));
       await tester.pumpAndSettle();
 
       verify(mockObserver.didPush(any, any));
-      expect(find.byType(ProfilePage), findsOneWidget);
+      expect(find.byType(ProfileView), findsOneWidget);
     });
 
     testWidgets(
-        'when tapping "My Projects" in expansion tile, should navigate to MyProjects page',
+        'when tapping "My Projects" in expansion tile, should navigate to MyProjects View',
         (WidgetTester tester) async {
       await _openDrawerExpansionTile(tester);
       await tester.tap(find.byKey(Key(Keys.myProjectsDrawerTile)));
       await tester.pumpAndSettle();
 
       verify(mockObserver.didPush(any, any));
-      expect(find.byType(MyProjectsPage), findsOneWidget);
+      expect(find.byType(MyProjectsView), findsOneWidget);
     });
 
     testWidgets(

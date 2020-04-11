@@ -1,18 +1,25 @@
 import 'dart:convert';
 
-import "package:cv_projects_task/login_page.dart";
+import 'package:cv_projects_task/constants.dart';
+import 'package:cv_projects_task/locator.dart';
+import 'package:cv_projects_task/ui/views/login_view.dart';
 import "package:flutter/material.dart";
 import "package:flutter_test/flutter_test.dart";
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'fake_test_data.dart';
 
 void main() {
+  setUpAll(() {
+    setupLocator();
+  });
+
   Future<void> pumpLogInPage(WidgetTester tester, {http.Client client}) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: LoginPage(
+        home: LoginView(
           client: client,
         ),
       ),
@@ -53,25 +60,30 @@ void main() {
     expect(find.text('Login Successful'), findsNothing);
   });
 
-  testWidgets('Logs in checks for "Login Successful"',
-      (WidgetTester tester) async {
+  testWidgets('Logs in checks for LoginResponse', (WidgetTester tester) async {
     MockClient mockClient = MockClient((request) async {
       return http.Response(json.encode(fakeLoginResponse), 202);
     });
+
+    SharedPreferences.setMockInitialValues(
+      {"isLoggedIn": false, "currentUserName": "mock User"},
+    );
+
     await fillLoginDetailsAndTapLogin(tester, mockClient);
 
-    expect(find.text("Login Successful"), findsOneWidget);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    expect(prefs.getBool("isLoggedIn"), true);
+    expect(prefs.getString("currentUserName"), "Test User");
   });
 
-  testWidgets(
-      'Log in failed and checks for "Authentication details were not correct"',
+  testWidgets('Log in failed for no user and checks for "No User Found"',
       (WidgetTester tester) async {
     MockClient mockClient = MockClient((request) async {
       return http.Response('Not found', 404);
     });
     await fillLoginDetailsAndTapLogin(tester, mockClient);
 
-    expect(
-        find.text("Authentication details were not correct"), findsOneWidget);
+    expect(find.text(Constants.USER_AUTH_USER_NOT_FOUND), findsOneWidget);
   });
 }

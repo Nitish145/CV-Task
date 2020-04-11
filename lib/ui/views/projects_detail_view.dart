@@ -94,10 +94,10 @@ class _ProjectDetailViewState extends State<ProjectDetailView> {
   @override
   Widget build(BuildContext context) {
     return BaseView<ProjectDetailsModel>(
-      onModelReady: (model) => model
-          .getProjectDetails(widget.id, client: widget.client)
-          .catchError((e) {
-        showSnackBar(projectDetailsViewScaffoldKey, model.errorMessage);
+      onModelReady: (model) =>
+          model.getProjectDetails(widget.id, client: widget.client).then((_) {
+        if (model.state == ViewState.Error)
+          showSnackBar(projectDetailsViewScaffoldKey, model.errorMessage);
       }),
       builder: (context, model, child) => Scaffold(
         key: projectDetailsViewScaffoldKey,

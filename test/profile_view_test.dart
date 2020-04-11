@@ -1,6 +1,8 @@
 import 'dart:convert';
 
-import 'package:cv_projects_task/profile_page.dart';
+import 'package:cv_projects_task/constants.dart';
+import 'package:cv_projects_task/locator.dart';
+import 'package:cv_projects_task/ui/views/profile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
@@ -10,10 +12,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'fake_test_data.dart';
 
 void main() {
+  setUpAll(() {
+    setupLocator();
+  });
+
   Future<void> pumpProfilePage(WidgetTester tester, http.Client client) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: ProfilePage(client: client),
+        home: ProfileView(client: client),
       ),
     );
   }
@@ -40,8 +46,7 @@ void main() {
       await pumpProfilePage(tester, mockClient);
       await tester.pumpAndSettle();
 
-      expect(find.text("Something Went Wrong! Please try again later"),
-          findsOneWidget);
+      expect(find.text(Constants.USER_NOT_FOUND), findsOneWidget);
     });
   });
 }

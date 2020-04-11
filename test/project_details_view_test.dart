@@ -1,7 +1,8 @@
 import 'dart:convert';
 
-import 'package:cv_projects_task/components/project_card.dart';
-import 'package:cv_projects_task/public_projects_page.dart';
+import 'package:cv_projects_task/constants.dart';
+import 'package:cv_projects_task/locator.dart';
+import 'package:cv_projects_task/ui/views/projects_detail_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
@@ -10,26 +11,30 @@ import 'package:image_test_utils/image_test_utils.dart';
 
 import 'fake_test_data.dart';
 
-main() {
-  Future<void> pumpPublicProjectsPage(
+void main() {
+  setUpAll(() {
+    setupLocator();
+  });
+
+  Future<void> pumpProjectDetailsPage(
       WidgetTester tester, http.Client client) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: PublicProjectsPage(client: client),
+        home: ProjectDetailView(id: 1, client: client),
       ),
     );
   }
 
-  group('Tests Public Projects API call and relevant widget renders', () {
-    testWidgets('load and shows public projects', (WidgetTester tester) async {
+  group("Tests Project Details API call and relevant widget renders", () {
+    testWidgets('loads and shows project details', (WidgetTester tester) async {
       provideMockedNetworkImages(() async {
         MockClient mockClient = MockClient((request) async {
-          return http.Response(json.encode(fakeProjectsResponse), 200);
+          return http.Response(json.encode(fakeProjectDetailsResponse), 200);
         });
-        await pumpPublicProjectsPage(tester, mockClient);
+        await pumpProjectDetailsPage(tester, mockClient);
         await tester.pumpAndSettle();
 
-        expect(find.byType(ProjectCard), findsNWidgets(2));
+        expect(find.text("Test Title"), findsOneWidget);
       });
     });
 
@@ -38,11 +43,10 @@ main() {
         MockClient mockClient = MockClient((request) async {
           return http.Response('Not Found', 404);
         });
-        await pumpPublicProjectsPage(tester, mockClient);
+        await pumpProjectDetailsPage(tester, mockClient);
         await tester.pumpAndSettle();
 
-        expect(find.text("Something Went Wrong! Please try again later"),
-            findsOneWidget);
+        expect(find.text(Constants.GENERIC_FAILURE), findsNWidgets(2));
       });
     });
   });
